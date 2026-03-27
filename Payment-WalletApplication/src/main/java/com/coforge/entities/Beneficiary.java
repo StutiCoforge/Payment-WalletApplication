@@ -1,5 +1,4 @@
 package com.coforge.entities;
-
 //import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.ValueGenerationType;
 
