@@ -1,3 +1,4 @@
+
 package com.coforge.entities;
 
 import java.math.BigDecimal;
@@ -38,3 +39,4 @@ public class Wallet {
     @OneToMany(mappedBy = "wallet")
     private List<Transaction> transactions;
 }
+
