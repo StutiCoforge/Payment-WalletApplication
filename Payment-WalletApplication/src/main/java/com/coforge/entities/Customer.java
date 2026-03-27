@@ -42,4 +42,3 @@ public class Customer{
 		this.pwd = pwd;
 		this.wallet = new Wallet();
 	}
-}
