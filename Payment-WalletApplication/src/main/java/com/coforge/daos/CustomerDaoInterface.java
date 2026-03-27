@@ -9,4 +9,5 @@ public interface CustomerDaoInterface
 	public Optional<Customer> getById(long customerId);
 	public Customer updateCustomer(Customer customer, long id);
 	public void deleteCustomer(long itemId);
+	public Optional<Customer> findByEmailAndPwd(String email, String pwd);
 }

@@ -9,4 +9,5 @@ public interface CustomerServiceInterface
 	public Customer getById(long customerId);
 	public Customer updateCustomer(Customer customer, long id);
 	public void deleteCustomer(long itemId);
+	public Customer login(String email, String pwd);
 }

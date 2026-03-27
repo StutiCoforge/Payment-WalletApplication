@@ -35,4 +35,9 @@ public class CustomerDao implements CustomerDaoInterface
 	{
 		customerRepository.deleteById(customerId);
 	}
+	@Override
+	public Optional<Customer> findByEmailAndPwd(String email, String pwd)
+	{
+		return customerRepository.findByEmailAndPwd(email, pwd);
+	}
 }

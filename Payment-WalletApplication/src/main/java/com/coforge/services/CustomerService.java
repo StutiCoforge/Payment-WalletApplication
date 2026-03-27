@@ -28,7 +28,6 @@ public class CustomerService implements CustomerServiceInterface
 	{
 		return customerDao.getById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer Not Found" + customerId));
 	}
-
 	@Override
 	public Customer updateCustomer(Customer customer, long customerId)
 	{
@@ -36,12 +35,18 @@ public class CustomerService implements CustomerServiceInterface
 		customer1.setCustName(customer.getCustName());
 		customer1.setMobileNumber(customer.getMobileNumber());
 		customer1.setPwd(customer.getPwd());
-		return null;
+		return customerDao.updateCustomer(customer1, customerId);
 	}
 
 	@Override
 	public void deleteCustomer(long customerId)
 	{
 		customerDao.deleteCustomer(customerId);
+	}
+
+	@Override
+	public Customer login(String email, String pwd)
+	{
+		return customerDao.findByEmailAndPwd(email, pwd).orElseThrow(() -> new CustomerNotFoundException("Invalid Email or Password"));
 	}
 }
