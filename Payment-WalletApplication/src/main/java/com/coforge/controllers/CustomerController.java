@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.coforge.dtos.CustomerDto;
+import com.coforge.dtos.CustomerJWTTokenDto;
 import com.coforge.dtos.LoginRequestDto;
 import com.coforge.dtos.LoginResponseDto;
 import com.coforge.entities.Customer;
@@ -26,7 +26,6 @@ public class CustomerController
 	@GetMapping("/auth/customers")
 	public ResponseEntity<List<Customer>> getAllCustomer()
 	{
-		System.out.println("customer");
 		return new ResponseEntity<> (customerService.getAllCustomer(), HttpStatus.OK);
 	}
 	@GetMapping("/customers{customerId}")
@@ -36,16 +35,16 @@ public class CustomerController
 	}
 	@PostMapping("/customers/signup")
 	public ResponseEntity<LoginResponseDto> saveCustomer(@RequestBody Customer customer)
-	{
+	{	
 		Customer savedCustomer = customerService.saveCustomer(customer);
-		String token = jwtUtil.generateToken(savedCustomer.getEmail());
+		String token = jwtUtil.generateToken(new CustomerJWTTokenDto(savedCustomer.getCustId(),savedCustomer.getCustName(),savedCustomer.getMobileNumber(),savedCustomer.getEmail()));
 		return new ResponseEntity<> (new LoginResponseDto(token, savedCustomer.getEmail()), HttpStatus.CREATED);
 	}
 	@PostMapping("/customers/login")
 	public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginDto)
 	{
 		Customer customer = customerService.login(loginDto.getEmail(), loginDto.getPwd());
-		String token = jwtUtil.generateToken(customer.getEmail());
+		String token = jwtUtil.generateToken(new CustomerJWTTokenDto(customer.getCustId(),customer.getCustName(),customer.getMobileNumber(),customer.getEmail()));
 		return new ResponseEntity<> (new LoginResponseDto(token, customer.getEmail()), HttpStatus.OK);
 	}
 	@PutMapping("/customers/{customerId}")
@@ -59,5 +58,4 @@ public class CustomerController
 		customerService.deleteCustomer(customerId);
 		return new ResponseEntity<>("Customer Deleted Successfully", HttpStatus.OK);
 	}
-	
 }
