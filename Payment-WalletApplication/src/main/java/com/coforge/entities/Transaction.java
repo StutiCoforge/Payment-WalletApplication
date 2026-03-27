@@ -36,6 +36,8 @@ public class Transaction {
   String description;
 
 
+
+
   public Transaction(@NotNull String transactionType, double transactionAmount, Customer customer, String description) {
 	super();
 	this.transactionType = transactionType;
@@ -44,4 +46,5 @@ public class Transaction {
 	this.description = description;
   }
   
+
 }
