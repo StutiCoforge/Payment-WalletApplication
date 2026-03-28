@@ -30,7 +30,7 @@ public class BankAccount {
 	private double balance;
 	
 	@ManyToOne
-	@JoinColumn(name="customer_id")
+	@JoinColumn(name="customer_id",referencedColumnName = "custId")
 	private Customer customer;
 
 	public BankAccount(String accountNo, String ifscCode, String bankname, double balance, Customer customer) {
@@ -41,6 +41,24 @@ public class BankAccount {
 		this.balance = balance;
 		this.customer = customer;
 	}
+
+	public BankAccount(@NotEmpty String accountNo, @NotEmpty String ifscCode, @NotEmpty String bankname,
+			Customer customer) {
+		super();
+		this.accountNo = accountNo;
+		this.ifscCode = ifscCode;
+		this.bankname = bankname;
+		this.customer = customer;
+	}
+	
+	public BankAccount(@NotEmpty String accountNo, @NotEmpty String ifscCode, @NotEmpty String bankname) {
+		super();
+		this.accountNo = accountNo;
+		this.ifscCode = ifscCode;
+		this.bankname = bankname;
+	}
+	
+	
 	
 	
 	

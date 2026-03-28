@@ -33,9 +33,9 @@ public class Beneficiary {
 //	    @JoinColumn(name = "walletId")
 //	    private Wallet wallet;
 
-       @OneToOne
-       @JoinColumn(name = "bankAccountId")  
-       private BankAccount bankAccount;
+//       @OneToOne
+//       @JoinColumn(name = "bankAccountId")  
+//       private BankAccount bankAccount;
 
 	    
         

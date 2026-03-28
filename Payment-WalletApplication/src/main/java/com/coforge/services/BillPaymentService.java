@@ -1,19 +1,24 @@
 package com.coforge.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.coforge.daos.BillPaymetDao;
 import com.coforge.dtos.BillPaymentRequestDto;
 import com.coforge.dtos.BillPaymentResponseDto;
+import com.coforge.dtos.CustomerJWTTokenDto;
 import com.coforge.dtos.ElectricityBillPaymentDto;
 import com.coforge.dtos.GasCylinderBookingBillPaymentDto;
 import com.coforge.dtos.MobileRechargeBillPaymentDto;
 import com.coforge.entities.BillPayment;
 import com.coforge.entities.BillType;
+import com.coforge.entities.Customer;
 import com.coforge.entities.Transaction;
 import com.coforge.entities.Wallet;
 import com.coforge.exception.InvalidBillPaymentDataException;
@@ -25,12 +30,15 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 	BillPaymetDao billPaymentDao;
 
 	@Autowired
-	WalletService walletService;
+	WalletServiceImpl walletService;
+
+	@Autowired
+	CustomerService customerService;
 
 	@Autowired
 	TransactionService transactionService;
 	
-	private long customerid = 88;
+//	private long customerid = 88;
 
 	@Override
 	public List<BillPaymentResponseDto> getAllBillPayments() {
@@ -45,21 +53,29 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 
 	@Override
 	public BillPaymentResponseDto createBillPayment(BillPaymentRequestDto billPaymentRequestDto) {
-		BillPayment billPayment = new BillPayment();
-//		Transaction transaction = transactionService.addTransaction("DEBIT",billPaymentRequestDto.getAmount(),"PENDING");
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+		Customer customer = customerService.getById(customerDto.getCustId());
+		Wallet wallet = walletService.getWalletByCustomerId(customerDto.getCustId());
 		
+		BillPayment billPayment = new BillPayment();
+		String description="Bill Payment "+billPaymentRequestDto.getBillType();
+        Transaction trans= new Transaction("DEBIT",billPaymentRequestDto.getAmount(),customer,description);
+        Transaction transaction = transactionService.addTransaction(trans);
 		try {
 			billPayment = convertBillPaymentRequestDtoToBillPayment(billPaymentRequestDto);
-			System.out.println(billPayment);
-//			Wallet wallet = walletService.getWalletByCustomerId(customerid);
-//			walletService.debit(wallet.getId(),billPaymentRequestDto.getAmount());
-//			transaction.setStatus("SUCCESS");
-//			transactionService.update(transaction);
-			BillPayment b = billPaymentDao.saveBillPayment(billPayment);
+//			System.out.println(billPayment);
+			walletService.debit(wallet.getWalletId(), BigDecimal.valueOf(billPaymentRequestDto.getAmount()));
+			transaction.setTransactionStatus("SUCCESS");
+            transactionService.updateTransaction(transaction);
+            BillPayment b = billPaymentDao.saveBillPayment(billPayment);
+            
 			return createBillPaymentResponseDtoFromBillPayment(b);
 		}
 		catch(Exception e) {
 			System.out.println(e);
+			transaction.setTransactionStatus("FAILED");
+            transactionService.updateTransaction(transaction);
 			throw new InvalidBillPaymentDataException("Invalid bill data");
 		}
 	}
@@ -70,8 +86,8 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 		billPayment.setAmount(billPaymentRequestDto.getAmount());
 		billPayment.setBillType(billPaymentRequestDto.getBillType());
 //		Wallet wallet = walletService.getWalletById(billPaymentRequestDto.getWallet_id());
-		Wallet wallet = walletService.getWalletByCustomerId(customerid);
-		billPayment.setWallet(wallet);
+//		Wallet wallet = walletService.getWalletByCustomerId(customerid);
+//		billPayment.setWallet(wallet);
 		if(billPaymentRequestDto.getBillType().equals(BillType.MOBILE_RECHARGE)) {
 			MobileRechargeBillPaymentDto mobileDto = objectMapper.convertValue(billPaymentRequestDto.getBillData(),MobileRechargeBillPaymentDto.class);
 			System.out.println(mobileDto);

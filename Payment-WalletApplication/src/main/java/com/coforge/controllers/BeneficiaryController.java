@@ -3,6 +3,7 @@ package com.coforge.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +20,7 @@ import com.coforge.services.BeneficiaryService;
 
 
 @RestController
-@RequestMapping("/beneficiary")
+@RequestMapping("/auth")
 public class BeneficiaryController {
 	    @Autowired
 	   private BeneficiaryService service;
@@ -44,10 +45,10 @@ public class BeneficiaryController {
 			return new ResponseEntity<Beneficiary>(service.getBeneficiaryById(cid),HttpStatus.OK);
 		}
 
-		@DeleteMapping("/beneficiary/{cid}")
-		public ResponseEntity<String> deleteBeneficiary(@PathVariable("cid") long cid) {
+		@DeleteMapping("/beneficiary/{bid}")
+		public ResponseEntity<String> deleteBeneficiary(@PathVariable("bid") long bid) {
 		  
-			service.deleteBeneficiary(cid);
+			service.deleteBeneficiary(bid);
 			return new ResponseEntity<>("Beneficiary deleted successfully",HttpStatus.OK);
 		}
 	
@@ -61,5 +62,13 @@ public class BeneficiaryController {
 		    return service.findByMobileNumber(mobileNumber)
 		            .map(ResponseEntity::ok)
 		            .orElse(ResponseEntity.notFound().build());
+		}
+
+		@PostMapping("/beneficiary/mobile/sendMoney/{mobileNumber}")
+		public ResponseEntity<String> transferMoneyToBeneficiaryByMobile(@Param("amount") String amount,@PathVariable("mobileNumber") String mobileNumber) {
+			
+			String response = service.sendMoney(mobileNumber, Double.parseDouble(amount));
+			
+			return new ResponseEntity<>(response,HttpStatus.OK);
 		}
 }

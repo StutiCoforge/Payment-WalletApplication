@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.coforge.dtos.CustomerDto;
 import com.coforge.dtos.CustomerJWTTokenDto;
 import com.coforge.dtos.LoginRequestDto;
 import com.coforge.dtos.LoginResponseDto;
@@ -24,7 +26,7 @@ public class CustomerController
 	@Autowired
 	private JwtUtil jwtUtil;
 	@GetMapping("/auth/customers")
-	public ResponseEntity<List<Customer>> getAllCustomer()
+	public ResponseEntity<List<CustomerDto>> getAllCustomer()
 	{
 		return new ResponseEntity<> (customerService.getAllCustomer(), HttpStatus.OK);
 	}

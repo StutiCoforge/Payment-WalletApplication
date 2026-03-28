@@ -12,5 +12,5 @@ public class CustomerDto
 	private String custName;
 	private String mobileNumber;
 	private String email;
-	//private Wallet wallet;
+//	private WalletDto wallet;
 }

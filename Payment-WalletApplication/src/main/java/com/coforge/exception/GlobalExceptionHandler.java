@@ -22,5 +22,10 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleBankAccountNotFoundException(BankAccountNotFoundException e){
 		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
 	}
+
+	@ExceptionHandler(BankAccountInsufficientBalanceException.class)
+	public ResponseEntity<String> handleBankAccountInsufficientBalanceException(BankAccountInsufficientBalanceException e){
+		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+	}
 	
 }

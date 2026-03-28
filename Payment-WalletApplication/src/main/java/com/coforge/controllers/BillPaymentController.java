@@ -18,7 +18,7 @@ import com.coforge.dtos.BillPaymentResponseDto;
 import com.coforge.services.BillPaymentService;
 
 @RestController
-@RequestMapping("/billPayments")
+@RequestMapping("/auth/billPayments")
 public class BillPaymentController {
 	@Autowired
 	BillPaymentService billPaymentService;

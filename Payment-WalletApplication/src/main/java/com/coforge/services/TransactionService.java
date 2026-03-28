@@ -31,7 +31,7 @@ public class TransactionService implements TransactionServiceInterface {
     public Transaction addTransaction(Transaction requestTx) {
 
         Customer customer = transactionDao.findCustomerById(
-                requestTx.getCustomer().getCustomerId()
+                requestTx.getCustomer().getCustId()
         );
 
         if (customer == null)

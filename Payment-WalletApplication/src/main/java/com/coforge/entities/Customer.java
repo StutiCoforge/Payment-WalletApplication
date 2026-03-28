@@ -1,10 +1,12 @@
 package com.coforge.entities;
+import java.math.BigDecimal;
 import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -30,6 +32,7 @@ public class Customer{
 	private String email;
 	private String pwd;
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "wallet_id", referencedColumnName = "walletId")
 	private Wallet wallet;
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<BankAccount> bankAccounts;
@@ -40,5 +43,12 @@ public class Customer{
 		this.mobileNumber = mobileNumber;
 		this.email = email;
 		this.pwd = pwd;
-		this.wallet = new Wallet();
+		this.wallet = new Wallet(BigDecimal.ZERO,this);
 	}
+
+	public void addBankAccount(BankAccount bank)
+	{
+		this.bankAccounts.add(bank);
+	}
+	
+}

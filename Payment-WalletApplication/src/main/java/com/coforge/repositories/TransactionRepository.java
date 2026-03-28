@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.coforge.entities.Beneficiary;
 import com.coforge.entities.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Long>{
-	  List<Transaction> findByTransDateBetween(LocalDate from, LocalDate to);
+	  List<Transaction> findByTransactionDateBetween(LocalDate from, LocalDate to);
 }

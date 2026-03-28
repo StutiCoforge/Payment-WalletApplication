@@ -1,5 +1,3 @@
-
-
 package com.coforge.entities;
 
 import java.math.BigDecimal;
@@ -24,21 +22,45 @@ public class Wallet {
     private Long walletId;
 
     @NotNull(message = "Wallet balance cannot be null")
-    @Positive(message = "Wallet balance must be greater than zero")
+//    @Positive(message = "Wallet balance must be greater than zero")
     @Column(nullable = false)
     private BigDecimal balance;
 
     @OneToOne(mappedBy = "wallet")
     private Customer customer;
 
-    @OneToMany(mappedBy = "wallet")
-    private List<BankAccount> bankAccounts;
+//    @OneToMany(mappedBy = "wallet")
+//    private List<BankAccount> bankAccounts;
 
-    @OneToMany(mappedBy = "wallet")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "wallet_id")
     private List<Beneficiary> beneficiary;
+	
+	public Wallet(
+			@NotNull(message = "Wallet balance cannot be null") @Positive(message = "Wallet balance must be greater than zero") BigDecimal balance,
+			Customer customer, List<Beneficiary> beneficiary) {
+		super();
+		this.balance = balance;
+		this.customer = customer;
+		this.beneficiary = beneficiary;
+	}
 
-    @OneToMany(mappedBy = "wallet")
-    private List<Transaction> transactions;
+	public Wallet(
+			@NotNull(message = "Wallet balance cannot be null") @Positive(message = "Wallet balance must be greater than zero") BigDecimal balance,
+			Customer customer) {
+		super();
+		this.balance = balance;
+		this.customer = customer;
+	}
+	
+	public void addBenificiary(Beneficiary b) {
+		beneficiary.add(b);
+	}
+
+//    @OneToMany(mappedBy = "wallet")
+//    private List<Transaction> transactions;
+    
+    
 }
 
 
