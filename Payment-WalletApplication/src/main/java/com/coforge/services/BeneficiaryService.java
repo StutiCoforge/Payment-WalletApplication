@@ -18,6 +18,8 @@ import com.coforge.dtos.CustomerJWTTokenDto;
 import com.coforge.entities.Beneficiary;
 import com.coforge.entities.Customer;
 import com.coforge.entities.Transaction;
+import com.coforge.entities.TransactionCategory;
+import com.coforge.entities.TransactionSubCategory;
 import com.coforge.entities.Wallet;
 //import com.coforge.entities.Student;
 //import com.coforge.exceptions.InvalidDobFormatException;
@@ -79,11 +81,28 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 			}
 		
 		}
+        
+		
+		
+		public void deleteBeneficiaryByAdmin(long bid) {
+			
+			Beneficiary exBeneficiary=dao.getBeneficiaryById(bid).orElseThrow(()-> new BeneficiaryException("no beneficiary found with this id"+bid));
+	        if(exBeneficiary!=null) {
+	        	dao.deleteBeneficiary(bid);
+	        	System.out.println("beneficiary deleted successfully");
+	        }
+	        else {
+	        	System.out.println("no beneficiary present");
+	        }
+		}
 
 		
 		@Override
 		public void deleteBeneficiary(long bid) {
 			// TODO Auto-generated method stub
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+			
 			Beneficiary exBeneficiary=dao.getBeneficiaryById(bid).orElseThrow(()-> new BeneficiaryException("no beneficiary found with this id"+bid));
 	        if(exBeneficiary!=null) {
 	        	dao.deleteBeneficiary(bid);
@@ -117,8 +136,20 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 	 
 	        walletService.debit(wallet.getWalletId(), BigDecimal.valueOf(amount));
 	        
-	        String discription="Transfer to"+beneficiary.getBeneficiaryName();
-	        Transaction trans= new Transaction("DEBIT",amount,customer,discription);
+	        String description="Transfer to"+beneficiary.getBeneficiaryName();
+            //TransactionCategogry e= BENEFICIARY_TRANSFER;
+
+Transaction trans = new Transaction(
+    "DEBIT",
+    "PENDING",   // ✅ YOU WERE MISSING THIS
+    amount,
+    customer,
+    description,
+    TransactionCategory.BENEFICIARY_TRANSFER,
+    TransactionSubCategory.NONE
+);
+
+
 	        Transaction transaction = transactionService.addTransaction(trans);
 	        
 	        try {

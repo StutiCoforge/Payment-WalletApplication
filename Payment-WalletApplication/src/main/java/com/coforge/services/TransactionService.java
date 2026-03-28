@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import com.coforge.daos.TransactionDao;
 
 import com.coforge.entities.Transaction;
+import com.coforge.entities.TransactionCategory;
+import com.coforge.entities.TransactionSubCategory;
 
 @Service
 public class TransactionService implements TransactionServiceInterface {
@@ -73,6 +75,34 @@ public class TransactionService implements TransactionServiceInterface {
 	public List<Transaction> viewTransactionByDate(LocalDate from, LocalDate to) {
 	    return transactionDao.viewTransactionByDate(from, to);
 	}
+
+@Override
+    public List<Transaction> getByCategory(TransactionCategory category) {
+        return transactionDao.getByCategory(category);
+    }
+
+   
+    @Override
+    public List<Transaction> getBySubCategory(TransactionSubCategory subCategory) {
+        return transactionDao.getBySubCategory(subCategory);
+    }
+    @Override
+    public List<Transaction> getCustomerTransactionsByCategory(Long custId, TransactionCategory category) {
+        return transactionDao.getCustomerTransactionsByCategory(custId, category);
+    }
+
+
+     @Override
+     public List<Transaction> getCustomerTransactionsBySubCategory(Long custId, TransactionSubCategory subCategory) {
+         return transactionDao.getCustomerTransactionsBySubCategory(custId, subCategory);
+     }
+
+
+
+     @Override
+       public List<Transaction> viewTransactionByMonth(int month, int year) {
+           return transactionDao.viewTransactionByMonth(month, year);
+       }
 
 
 	

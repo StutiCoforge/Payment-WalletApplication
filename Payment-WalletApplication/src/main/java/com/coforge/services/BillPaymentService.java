@@ -20,6 +20,8 @@ import com.coforge.entities.BillPayment;
 import com.coforge.entities.BillType;
 import com.coforge.entities.Customer;
 import com.coforge.entities.Transaction;
+import com.coforge.entities.TransactionCategory;
+import com.coforge.entities.TransactionSubCategory;
 import com.coforge.entities.Wallet;
 import com.coforge.exception.InvalidBillPaymentDataException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,7 +62,17 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 		
 		BillPayment billPayment = new BillPayment();
 		String description="Bill Payment "+billPaymentRequestDto.getBillType();
-        Transaction trans= new Transaction("DEBIT",billPaymentRequestDto.getAmount(),customer,description);
+
+Transaction trans = new Transaction(
+    "DEBIT",
+    "PENDING",
+    billPaymentRequestDto.getAmount(),
+    customer,
+    description,
+    TransactionCategory.BILL_PAYMENT,
+    mapBillType(billPaymentRequestDto.getBillType())  // ✅ Convert BillType → SubCategory
+);
+
         Transaction transaction = transactionService.addTransaction(trans);
 		try {
 			billPayment = convertBillPaymentRequestDtoToBillPayment(billPaymentRequestDto);
@@ -79,6 +91,9 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 			throw new InvalidBillPaymentDataException("Invalid bill data");
 		}
 	}
+
+
+
 	
 	public BillPayment convertBillPaymentRequestDtoToBillPayment(BillPaymentRequestDto billPaymentRequestDto) {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -120,5 +135,12 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 	
 	public BillPaymentResponseDto createBillPaymentResponseDtoFromBillPayment(BillPayment billPayment) {
 		return new BillPaymentResponseDto(billPayment.getBillId(),billPayment.getPaymentDate(),billPayment.getAmount(),billPayment.getBillType(),billPayment.getBillData());
+	}
+	private TransactionSubCategory mapBillType(BillType billType) {
+	    return switch (billType) {
+	        case ELECTRICITY -> TransactionSubCategory.ELECTRICITY;
+	        case MOBILE_RECHARGE -> TransactionSubCategory.MOBILE_RECHARGE;
+	        case GAS_BOOKING -> TransactionSubCategory.GAS;
+	    };
 	}
 }

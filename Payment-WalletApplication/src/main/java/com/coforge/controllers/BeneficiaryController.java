@@ -63,6 +63,14 @@ public class BeneficiaryController {
 		            .map(ResponseEntity::ok)
 		            .orElse(ResponseEntity.notFound().build());
 		}
+		@GetMapping("beneficiary/name/{name}")
+		public ResponseEntity<Beneficiary> getBeneficiaryByName(@PathVariable String name) {
+
+		    return service.findByBeneficiaryName(name)
+		            .map(ResponseEntity::ok)
+		            .orElse(ResponseEntity.notFound().build());
+		}
+		
 
 		@PostMapping("/beneficiary/mobile/sendMoney/{mobileNumber}")
 		public ResponseEntity<String> transferMoneyToBeneficiaryByMobile(@Param("amount") String amount,@PathVariable("mobileNumber") String mobileNumber) {
