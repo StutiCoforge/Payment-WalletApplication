@@ -17,7 +17,7 @@ import com.coforge.entities.TransactionSubCategory;
 import com.coforge.services.TransactionService;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/admin/transactions")
 public class TransactionAdminController {
     // ✅ 3. View ALL transactions
 

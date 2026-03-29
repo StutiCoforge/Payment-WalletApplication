@@ -62,4 +62,14 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(BeneficiaryException.class)
+	public ResponseEntity<String> handleBeneficiaryNotFoundException(BeneficiaryException e){
+		
+	 return new ResponseEntity<>(e.getMessage() ,HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(TransactionNotFoundException.class)
+    public ResponseEntity<String> handleTransactionNotFound(TransactionNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

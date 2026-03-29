@@ -108,4 +108,19 @@ public class WalletServiceImpl implements WalletService {
 		return wallet;
 
 	}
+
+	@Override
+	public List<Wallet> getAllWallets() {
+		return walletRepository.findAll();
+	}
+
+	@Override
+	public Wallet getWalletById(long walletId) {
+		return walletRepository.findById(walletId).orElseThrow(() -> new WalletNotFoundException("Wallet not found"));
+	}
+
+	@Override
+	public List<Wallet> searchWallet(String query) {
+		return walletRepository.searchWallet(query);
+	}
 }

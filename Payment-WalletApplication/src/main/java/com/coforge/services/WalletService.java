@@ -11,6 +11,10 @@ public interface WalletService {
     Wallet createWallet(BigDecimal balance);
     
     Wallet getWallet();
+    Wallet getWalletById(long walletId);
+    List<Wallet> searchWallet(String query);
+
+    List<Wallet> getAllWallets();
     
     Wallet getWalletByCustomerId(long custId);
     
