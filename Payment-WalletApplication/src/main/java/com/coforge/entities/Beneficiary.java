@@ -25,6 +25,7 @@ public class Beneficiary {
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	private long beneficiaryId;
 	 private String beneficiaryName;
+     
 
 	 @Pattern(regexp = "\\d{10}", message = "Phone number must be exactly 10 digits")
 	 private String mobileNumber;
