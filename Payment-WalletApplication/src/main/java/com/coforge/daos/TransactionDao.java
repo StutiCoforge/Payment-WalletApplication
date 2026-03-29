@@ -48,7 +48,7 @@ public class TransactionDao implements TransactionDaoInterface {
     @Override
     public List<Transaction> viewAllTransaction(){
         String jpql = "SELECT * FROM Transaction";
-        return entityManager.createQuery(jpql, Transaction.class).getResultList();
+        return transactionRepository.findAll();
     }
     public List<Transaction> getByCategory(TransactionCategory category) {
         return transactionRepository.findByCategory(category);

@@ -3,6 +3,7 @@ package com.coforge.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.coforge.dtos.TransactionDto;
 import com.coforge.entities.Transaction;
 
 
@@ -22,23 +23,23 @@ public interface TransactionServiceInterface {
     public Transaction updateTransaction(Transaction tran);
 
     // View ALL Transactions
-    public List<Transaction> viewAllTransaction();
+    public List<TransactionDto> viewAllTransaction();
 
     // View Transactions by Date Range
-    public List<Transaction> viewTransactionByDate(LocalDate from, LocalDate to);
+    public List<TransactionDto> viewTransactionByDate(LocalDate from, LocalDate to);
 
     // View by Category (BENEFICIARY, BILL_PAYMENT, TOP_UP)
-    public List<Transaction> getByCategory(TransactionCategory category);
+    public List<TransactionDto> getByCategory(TransactionCategory category);
 
     //View by SubCategory (ELECTRICITY, GAS, MOBILE_RECHARGE, etc.)
-    public List<Transaction> getBySubCategory(TransactionSubCategory subCategory);
+    public List<TransactionDto> getBySubCategory(TransactionSubCategory subCategory);
 
     // View Customer's Transactions by Category
-    public List<Transaction> getCustomerTransactionsByCategory(Long custId, TransactionCategory category);
+    public List<TransactionDto> getCustomerTransactionsByCategory(Long custId, TransactionCategory category);
 
     //View Customer's Transactions by SubCategory
-    public List<Transaction> getCustomerTransactionsBySubCategory(Long custId, TransactionSubCategory subCategory);
+    public List<TransactionDto> getCustomerTransactionsBySubCategory(Long custId, TransactionSubCategory subCategory);
 
-	List<Transaction> viewTransactionByMonth(int month, int year);
+	List<TransactionDto> viewTransactionByMonth(int month, int year);
 
 }

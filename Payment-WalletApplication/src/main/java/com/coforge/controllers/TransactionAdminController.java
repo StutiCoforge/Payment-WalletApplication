@@ -1,43 +1,29 @@
 package com.coforge.controllers;
 
-
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.coforge.dtos.TransactionDto;
-import com.coforge.entities.Transaction;
 import com.coforge.entities.TransactionCategory;
 import com.coforge.entities.TransactionSubCategory;
-
 import com.coforge.services.TransactionService;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 @RestController
-@RequestMapping("/auth/transactions")
-public class TransactionController {
+@RequestMapping("/transactions")
+public class TransactionAdminController {
+    // ✅ 3. View ALL transactions
 
     @Autowired
     private TransactionService transactionService;
 
-    // ✅ 1. Add Transaction
-    @PostMapping
-    public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction tx) {
-        return ResponseEntity.ok(transactionService.addTransaction(tx));
-    }
-
-    // ✅ 2. Update Transaction (SUCCESS / FAILED)
-    @PutMapping
-    public ResponseEntity<Transaction> updateTransaction(@RequestBody Transaction tx) {
-        return ResponseEntity.ok(transactionService.updateTransaction(tx));
-    }
-
-    // ✅ 3. View ALL transactions
     @GetMapping("/all")
     public ResponseEntity<List<TransactionDto>> getAllTransactions() {
         return ResponseEntity.ok(transactionService.viewAllTransaction());
@@ -70,8 +56,8 @@ public class TransactionController {
     ) {
         return ResponseEntity.ok(transactionService.getBySubCategory(sub));
     }
-
-//    // ✅ 7. Customer → View their own transactions by CATEGORY
+//
+////    // ✅ 7. Customer → View their own transactions by CATEGORY
 //    @GetMapping("/my/category/{category}")
 //    public ResponseEntity<List<Transaction>> getMyTransactionsByCategory(
 //            @PathVariable TransactionCategory category
@@ -100,5 +86,4 @@ public class TransactionController {
     ) {
         return ResponseEntity.ok(transactionService.viewTransactionByMonth(month, year));
     }
-
 }

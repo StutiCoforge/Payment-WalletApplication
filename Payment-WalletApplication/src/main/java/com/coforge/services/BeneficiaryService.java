@@ -70,7 +70,7 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 		}
 		@Override
 		public Beneficiary getBeneficiaryById(long bid) {
-			// TODO Auto-generated method stub
+			
 			
 			try {
 				return dao.getBeneficiaryById(bid).orElseThrow(()-> new BeneficiaryException("no beneficiary found with this id"+bid));
@@ -133,27 +133,29 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 	        // 1. Validate Beneficiary
 	        Beneficiary beneficiary = beneficiaryRepository.findByMobileNumber(mobileNumber)
 	                .orElseThrow(() -> new RuntimeException("Beneficiary not found"));
-	 
-	        walletService.debit(wallet.getWalletId(), BigDecimal.valueOf(amount));
-	        
 	        String description="Transfer to"+beneficiary.getBeneficiaryName();
+	        Transaction trans = new Transaction(
+	        	    "DEBIT",
+	        	    "PENDING",   // ✅ YOU WERE MISSING THIS
+	        	    amount,
+	        	    customer,
+	        	    description,
+	        	    TransactionCategory.BENEFICIARY_TRANSFER,
+	        	    TransactionSubCategory.NONE
+	        	);
+
+
+	        		        Transaction transaction = transactionService.addTransaction(trans);
+	 
+	       
+	        
+	      
             //TransactionCategogry e= BENEFICIARY_TRANSFER;
 
-Transaction trans = new Transaction(
-    "DEBIT",
-    "PENDING",   // ✅ YOU WERE MISSING THIS
-    amount,
-    customer,
-    description,
-    TransactionCategory.BENEFICIARY_TRANSFER,
-    TransactionSubCategory.NONE
-);
 
-
-	        Transaction transaction = transactionService.addTransaction(trans);
 	        
 	        try {
-	           
+	        	 walletService.debit(wallet.getWalletId(), BigDecimal.valueOf(amount));
 	            	 
 	        	transaction.setTransactionStatus("SUCCESS");
 	            transactionService.updateTransaction(transaction);
@@ -165,7 +167,7 @@ Transaction trans = new Transaction(
 	        	transaction.setTransactionStatus("FAILED");
 
 	            transactionService.updateTransaction(transaction);
-	            
+		        return "Transaction failed";
 	        }
 	 
 	        return "Transaction processed";
