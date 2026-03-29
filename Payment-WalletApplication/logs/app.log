@@ -1,0 +1,20 @@
+2026-03-30 01:23:44 INFO  com.coforge.filters.LoggingFilter - Request /admin/billPayments/search GET ?query=gau
+2026-03-30 01:24:15 INFO  com.coforge.filters.LoggingFilter - Request /admin/billPayments/search GET ?query=gau
+2026-03-30 01:27:20 INFO  com.coforge.filters.LoggingFilter - Request /admin/billPayments/search GET ?query=gau
+2026-03-30 01:27:40 INFO  com.coforge.filters.LoggingFilter - Request /admin/billPayments/search GET ?query=gau
+2026-03-30 01:29:36 INFO  com.coforge.PaymentWalletApplication - Starting PaymentWalletApplication using Java 21.0.10 with PID 25416 (C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication\target\classes started by Gaurav.Kuriyal in C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication)
+2026-03-30 01:29:36 INFO  com.coforge.PaymentWalletApplication - No active profile set, falling back to 1 default profile: "default"
+2026-03-30 01:29:37 INFO  com.coforge.PaymentWalletApplication - Started PaymentWalletApplication in 0.887 seconds (process running for 1350.003)
+2026-03-30 01:29:46 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Admin 8888888888 admin@mail.com
+2026-03-30 01:29:46 INFO  com.coforge.filters.LoggingFilter - Request /admin/billPayments/search GET ?query=gau
+2026-03-30 01:30:03 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Admin 8888888888 admin@mail.com
+2026-03-30 01:30:03 INFO  com.coforge.filters.LoggingFilter - Request /admin/billPayments/search GET ?query=gau
+2026-03-30 01:30:49 INFO  com.coforge.PaymentWalletApplication - Starting PaymentWalletApplication using Java 21.0.10 with PID 25416 (C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication\target\classes started by Gaurav.Kuriyal in C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication)
+2026-03-30 01:30:49 INFO  com.coforge.PaymentWalletApplication - No active profile set, falling back to 1 default profile: "default"
+2026-03-30 01:30:49 INFO  com.coforge.PaymentWalletApplication - Started PaymentWalletApplication in 0.893 seconds (process running for 1422.865)
+2026-03-30 01:32:18 INFO  com.coforge.PaymentWalletApplication - Starting PaymentWalletApplication using Java 21.0.10 with PID 25416 (C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication\target\classes started by Gaurav.Kuriyal in C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication)
+2026-03-30 01:32:18 INFO  com.coforge.PaymentWalletApplication - No active profile set, falling back to 1 default profile: "default"
+2026-03-30 01:32:19 INFO  com.coforge.PaymentWalletApplication - Started PaymentWalletApplication in 1.27 seconds (process running for 1512.681)
+2026-03-30 01:32:38 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Admin 8888888888 admin@mail.com
+2026-03-30 01:32:38 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/create POST 
+2026-03-30 01:32:38 ERROR com.coforge.security.JwtAuthenticationFilter - Error: Insufficient wallet balance

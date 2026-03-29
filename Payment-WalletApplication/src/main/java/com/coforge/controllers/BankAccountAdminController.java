@@ -16,43 +16,38 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coforge.dtos.BankAccountAdminRequestDto;
 import com.coforge.dtos.BankAccountDto;
 import com.coforge.entities.BankAccount;
 import com.coforge.services.BankAccountService;
 
 @RestController
-@RequestMapping("/auth/bankAccount")
-public class BankAccountController {
+@RequestMapping("/admin/bankAccount")
+public class BankAccountAdminController {
 	@Autowired
 	BankAccountService bankAccountService;
 	
 	@GetMapping("")
 	public ResponseEntity<List<BankAccountDto>> getBankAccounts(){
-		List<BankAccountDto> banks = bankAccountService.getAllBankAccountsOfCustomer().stream().map((b)->new BankAccountDto(b.getBankAccountId(),b.getAccountNo(),b.getIfscCode(),b.getBankname(),b.getBalance())).collect(Collectors.toList());
+		List<BankAccountDto> banks = bankAccountService.getAllBankAccounts().stream().map((b)->new BankAccountDto(b.getBankAccountId(),b.getAccountNo(),b.getIfscCode(),b.getBankname(),b.getBalance())).collect(Collectors.toList());
 		return new ResponseEntity<>(banks,HttpStatus.OK);
 	}
 
-	@GetMapping("/{bankAccountId}")
-	public ResponseEntity<BankAccountDto> getBankAccountById(@PathVariable("bankAccountId") long bankAccountId){
-		BankAccount bank = bankAccountService.getBankAccountByAccountIdCustomer(bankAccountId);
-		return new ResponseEntity<>(new BankAccountDto(bank.getBankAccountId(),bank.getAccountNo(),bank.getIfscCode(),bank.getBankname(),bank.getBalance()),HttpStatus.OK);
-	}
-
 	@PostMapping("/add")
-	public ResponseEntity<BankAccountDto> addBankAccounts(@RequestBody BankAccount bankAccount){
-		BankAccount bank = bankAccountService.saveBankAccountCustomer(bankAccount);
+	public ResponseEntity<BankAccountDto> addBankAccounts(@RequestBody BankAccountAdminRequestDto bankAccountRequestDto){
+		BankAccount bank = bankAccountService.saveBankAccount(bankAccountRequestDto);
 		return new ResponseEntity<>(new BankAccountDto(bank.getBankAccountId(),bank.getAccountNo(),bank.getIfscCode(),bank.getBankname(),bank.getBalance()),HttpStatus.OK);
 	}
 
 	@PutMapping("/{bankAccountId}")
-	public ResponseEntity<BankAccountDto> updateBankAccount(@PathVariable("bankAccountId") long bankAccountId,@RequestBody BankAccount bankAccount){
-		BankAccount bank = bankAccountService.updateBankAccountCustomer(bankAccountId,bankAccount);
+	public ResponseEntity<BankAccountDto> updateBankAccount(@RequestBody BankAccount bankAccount,@PathVariable("bankAccountId") long bankAccountId){
+		BankAccount bank = bankAccountService.updateBankAccount(bankAccountId,bankAccount);
 		return new ResponseEntity<>(new BankAccountDto(bank.getBankAccountId(),bank.getAccountNo(),bank.getIfscCode(),bank.getBankname(),bank.getBalance()),HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{bankAccountId}")
 	public ResponseEntity<String> deleteBankAccounts(@PathVariable("bankAccountId") long bankAccountId){
-		bankAccountService.deleteBankAccountCustomer(bankAccountId);
+		bankAccountService.deleteBankAccount(bankAccountId);
 		return new ResponseEntity<>("Bank Account Deleted",HttpStatus.OK);
 	}
 	
@@ -68,4 +63,10 @@ public class BankAccountController {
         }
         return new ResponseEntity<>(response,HttpStatus.CREATED);
     }
+	
+	@GetMapping("/search")
+	public ResponseEntity<List<BankAccountDto>> getBankAccountsByQuery(@Param("query") String query){
+		List<BankAccountDto> banks = bankAccountService.getAllBankAccountsByQuery(query).stream().map((b)->new BankAccountDto(b.getBankAccountId(),b.getAccountNo(),b.getIfscCode(),b.getBankname(),b.getBalance())).collect(Collectors.toList());
+		return new ResponseEntity<>(banks,HttpStatus.OK);
+	}
 }

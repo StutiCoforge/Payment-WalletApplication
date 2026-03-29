@@ -2,7 +2,6 @@ package com.coforge.services;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,10 +9,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.coforge.daos.BankAccountDao;
-import com.coforge.dtos.BankAccountDto;
+import com.coforge.dtos.BankAccountAdminRequestDto;
 import com.coforge.dtos.CustomerJWTTokenDto;
 import com.coforge.entities.BankAccount;
 import com.coforge.entities.Customer;
+import com.coforge.entities.Transaction;
+import com.coforge.entities.TransactionCategory;
+import com.coforge.entities.TransactionSubCategory;
 import com.coforge.entities.Wallet;
 import com.coforge.exception.BankAccountInsufficientBalanceException;
 import com.coforge.exception.BankAccountNotFoundException;
@@ -25,14 +27,22 @@ public class BankAccountService implements BankAccountServiceInterface {
 
 	@Autowired
 	CustomerService customerService;
+
+	@Autowired
+	TransactionService transactionService;
 	
 	@Autowired
-	WalletService walletService;
+	WalletServiceImpl walletService;
 	
 	@Override
 	public List<BankAccount> getAllBankAccounts() {
 		
 		return bankAccountDao.getAllBankAccounts();
+	}
+	
+	@Override
+	public List<BankAccount> getAllBankAccountsByQuery(String query) {
+		return bankAccountDao.getAllBankAccountsByQuery(query);
 	}
 
 	@Override
@@ -41,7 +51,7 @@ public class BankAccountService implements BankAccountServiceInterface {
 	}
 
 	@Override
-	public BankAccount saveBankAccount(BankAccount bankAccount) {
+	public BankAccount saveBankAccountCustomer(BankAccount bankAccount) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
 		Customer customer = customerService.getById(customerDto.getCustId());		
@@ -54,22 +64,61 @@ public class BankAccountService implements BankAccountServiceInterface {
 	}
 
 	@Override
-	public BankAccount updateBankAccount(BankAccount bankAccount) {
-		getBankAccountByAccountId(bankAccount.getBankAccountId());
-		return bankAccountDao.saveBankAccount(bankAccount);
+	public BankAccount updateBankAccount(long bankAccountId,BankAccount bankAccount) {
+		BankAccount bank = getBankAccountByAccountId(bankAccountId);
+		bank.setAccountNo(bankAccount.getAccountNo());
+		bank.setIfscCode(bankAccount.getIfscCode());
+		bank.setBankname(bankAccount.getBankname());
+		bank.setBalance(bankAccount.getBalance()==0?bank.getBalance():bankAccount.getBalance());
+		return bankAccountDao.saveBankAccount(bank);
 	}
 	
-	public String transferToWallet(double amount,long bankAccountId) {
+	public boolean transferToWallet(double amount,long bankAccountId) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
-//		Customer customer = customerService.getById(customerDto.getCustId());	
+		Customer customer = customerService.getById(customerDto.getCustId());
 		Wallet wallet = walletService.getWalletByCustomerId(customerDto.getCustId());
 		
-		walletService.credit(wallet.getWalletId(), BigDecimal.valueOf(amount));
+		List<BankAccount> banks = customer.getBankAccounts();
+		boolean bankFound = false;
+		for(BankAccount bank : banks) {
+			if(bank.getBankAccountId() == bankAccountId) {
+				bankFound = true;
+			}
+		}
 		
-		debitFromBankAccount(bankAccountId,amount);
+		if(bankFound==false) {
+			throw new BankAccountNotFoundException("Bank Account not found");
+		}
 		
-		return amount+"Rs. Transferred";
+		String description = "Topup of "+amount+" Rs. to wallet";
+		Transaction trans = new Transaction(
+			    "DEBIT",
+			    "PENDING",
+			    amount,
+			    customer,
+			    description,
+			    TransactionCategory.WALLET_TOP_UP,
+			    TransactionSubCategory.NONE
+			);
+
+		Transaction transaction = transactionService.addTransaction(trans);
+		try {
+			walletService.credit(wallet.getWalletId(), BigDecimal.valueOf(amount));
+			
+			debitFromBankAccount(bankAccountId,amount);
+			
+			transaction.setTransactionStatus("SUCCESS");
+            transactionService.updateTransaction(transaction);
+		
+			return true;
+		}
+		catch(Exception e) {
+			transaction.setTransactionStatus("FAILED");
+            transactionService.updateTransaction(transaction);
+            System.out.println(e);
+			return false;
+		}
 	}
 
 //	@Override
@@ -95,13 +144,82 @@ public class BankAccountService implements BankAccountServiceInterface {
 	}
 
 	@Override
-	public List<BankAccountDto> getAllBankAccountsOfCustomer() {
+	public List<BankAccount> getAllBankAccountsOfCustomer() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
 		Customer customer = customerService.getById(customerDto.getCustId());
 		
-		List<BankAccountDto> banks = customer.getBankAccounts().stream().map((b)->new BankAccountDto(b.getBankAccountId(),b.getAccountNo(),b.getIfscCode(),b.getBankname(),b.getBalance())).collect(Collectors.toList());
+		List<BankAccount> banks = customer.getBankAccounts();
 		return banks;
+	}
+
+	@Override
+	public BankAccount updateBankAccountCustomer(long bankAccountId,BankAccount bankAccount) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+		Customer customer = customerService.getById(customerDto.getCustId());
+		
+		List<BankAccount> banks = customer.getBankAccounts();
+		
+		for(BankAccount bank : banks) {
+			if(bank.getBankAccountId() == bankAccountId) {
+				bank.setAccountNo(bankAccount.getAccountNo());
+				bank.setIfscCode(bankAccount.getIfscCode());
+				bank.setBankname(bankAccount.getBankname());
+				bank.setBalance(bankAccount.getBalance()==0?bank.getBalance():bankAccount.getBalance());
+				return bankAccountDao.saveBankAccount(bank);
+			}
+		}
+		
+		throw new BankAccountNotFoundException("Bank Account not found");
+	}
+
+	@Override
+	public void deleteBankAccountCustomer(long bankAccountId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+		Customer customer = customerService.getById(customerDto.getCustId());
+		
+		List<BankAccount> banks = customer.getBankAccounts();
+		
+		for(BankAccount bank : banks) {
+			if(bank.getBankAccountId() == bankAccountId) {
+				customer.removeBankAccount(bank);
+				customerService.updateCustomer(customer,customer.getCustId());
+//				bankAccountDao.deleteBankAccount(bankAccountId);
+				return;
+			}
+		}
+		
+		throw new BankAccountNotFoundException("Bank Account not found");
+	}
+
+	@Override
+	public BankAccount getBankAccountByAccountIdCustomer(long bankAccountId) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+		Customer customer = customerService.getById(customerDto.getCustId());
+		
+		List<BankAccount> banks = customer.getBankAccounts();
+		
+		for(BankAccount bank : banks) {
+			if(bank.getBankAccountId() == bankAccountId) {
+				return bank;
+			}
+		}
+		
+		throw new BankAccountNotFoundException("Bank Account not found");
+	}
+
+	@Override
+	public BankAccount saveBankAccount(BankAccountAdminRequestDto bankAccountRequestDto) {		
+		Customer customer = customerService.getById(bankAccountRequestDto.getCustId());
+		BankAccount bankAccount = new BankAccount(bankAccountRequestDto.getAccountNo(),bankAccountRequestDto.getIfscCode(),bankAccountRequestDto.getBankname());
+		bankAccount.setBalance(10000);
+		bankAccount.setCustomer(customer);
+		customerService.addBankAccount(customer.getCustId(), bankAccount);
+		
+		return bankAccountDao.saveBankAccount(bankAccount);
 	}
 
 }

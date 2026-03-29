@@ -1,10 +1,11 @@
 package com.coforge.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,7 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +30,9 @@ public class BillPayment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long billId;
-	private LocalDate paymentDate=LocalDate.now();
+	
+	@CreatedDate
+	private LocalDateTime paymentDate;
 	@Min(value=1,message="Min amount for bill payment is 1")
 	private double amount;
 	
@@ -49,9 +51,8 @@ public class BillPayment {
 //	@OneToOne
 //	private Transaction transaction;
 
-	public BillPayment(LocalDate paymentDate, double amount, BillType billType, Map<String, Object> billData) {
+	public BillPayment(double amount, BillType billType, Map<String, Object> billData) {
 		super();
-		this.paymentDate = paymentDate;
 		this.amount = amount;
 		this.billType = billType;
 		this.billData = billData;

@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class CustomerDto
 {
+	private long custId;
 	private String custName;
 	private String mobileNumber;
 	private String email;
-//	private WalletDto wallet;
+	private WalletDto wallet;
 }

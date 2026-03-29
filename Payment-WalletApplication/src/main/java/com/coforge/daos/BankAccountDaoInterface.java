@@ -7,6 +7,7 @@ import com.coforge.entities.BankAccount;
 
 public interface BankAccountDaoInterface {
 	public List<BankAccount> getAllBankAccounts();
+	public List<BankAccount> getAllBankAccountsByQuery(String query);
 	public Optional<BankAccount> getBankAccountByAccountId(long bankAccountId);
 	public BankAccount saveBankAccount(BankAccount bankAccount);
 	public BankAccount updateBankAccount(BankAccount bankAccount);

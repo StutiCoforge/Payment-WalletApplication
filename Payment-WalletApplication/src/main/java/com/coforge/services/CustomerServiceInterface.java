@@ -8,10 +8,16 @@ import com.coforge.entities.Customer;
 public interface CustomerServiceInterface
 {
 	public List<CustomerDto> getAllCustomer();
+	public CustomerDto getDetails();
 	public Customer saveCustomer(Customer customer);
 	public Customer getById(long customerId);
-	public Customer updateCustomer(Customer customer, long id);
+	public CustomerDto getCustomerDtoById(long customerId);
+	public CustomerDto updateCustomer(Customer customer, long id);
 	public void deleteCustomer(long itemId);
 	public Customer addBankAccount(long customerId,BankAccount bankAccount);
 	public Customer login(String email, String pwd);
+	public List<Customer> findByEmail(String email);
+	public List<Customer> findByMobileNumber(String mobileNumber);
+	public List<Customer> findByEmailOrMobileNumber(String email,String mobileNumber);
+	public List<CustomerDto> findCustomerByQuery(String query);
 }

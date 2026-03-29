@@ -12,4 +12,5 @@ public class CustomerJWTTokenDto {
 	private String custName;
 	private String mobileNumber;
 	private String email;
+	private String role;
 }
