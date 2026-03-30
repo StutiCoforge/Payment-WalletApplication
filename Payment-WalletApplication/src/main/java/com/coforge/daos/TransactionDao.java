@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.coforge.entities.Customer;
 import com.coforge.entities.Transaction;
+import com.coforge.entities.TransactionCategory;
+import com.coforge.entities.TransactionSubCategory;
 import com.coforge.repositories.CustomerRepository;
 import com.coforge.repositories.TransactionRepository;
 
@@ -46,8 +48,29 @@ public class TransactionDao implements TransactionDaoInterface {
     @Override
     public List<Transaction> viewAllTransaction(){
         String jpql = "SELECT * FROM Transaction";
-        return entityManager.createQuery(jpql, Transaction.class).getResultList();
+        return transactionRepository.findAll();
     }
+    public List<Transaction> getByCategory(TransactionCategory category) {
+        return transactionRepository.findByCategory(category);
+    }
+
+    public List<Transaction> getBySubCategory(TransactionSubCategory subCategory) {
+        return transactionRepository.findBySubCategory(subCategory);
+    }
+
+    public List<Transaction> getCustomerTransactionsByCategory(Long custId, TransactionCategory category) {
+        return transactionRepository.findByCustomer_CustIdAndCategory(custId, category);
+    }
+
+    public List<Transaction> getCustomerTransactionsBySubCategory(Long custId, TransactionSubCategory subCategory) {
+        return transactionRepository.findByCustomer_CustIdAndSubCategory(custId, subCategory);
+    }
+
+    @Override
+      public List<Transaction> viewTransactionByMonth(int month, int year) {
+          return transactionRepository.findByMonthAndYear(month, year);
+      }
+
 
     @Override
     public List<Transaction> viewTransactionByDate(LocalDate from, LocalDate to) {

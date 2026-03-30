@@ -21,4 +21,5 @@ public Optional<Beneficiary> findByBeneficiaryName(String beneficiaryName);
 
 public	void deleteBeneficiary(long id) throws BeneficiaryException;
 
+String sendMoney(String mobileNumber, double amount);
 }

@@ -25,6 +25,7 @@ public class Beneficiary {
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	private long beneficiaryId;
 	 private String beneficiaryName;
+     
 
 	 @Pattern(regexp = "\\d{10}", message = "Phone number must be exactly 10 digits")
 	 private String mobileNumber;
@@ -33,9 +34,9 @@ public class Beneficiary {
 //	    @JoinColumn(name = "walletId")
 //	    private Wallet wallet;
 
-       @OneToOne
-       @JoinColumn(name = "bankAccountId")  
-       private BankAccount bankAccount;
+//       @OneToOne
+//       @JoinColumn(name = "bankAccountId")  
+//       private BankAccount bankAccount;
 
 	    
         

@@ -40,4 +40,20 @@ public class CustomerDao implements CustomerDaoInterface
 	{
 		return customerRepository.findByEmailAndPwd(email, pwd);
 	}
+	@Override
+	public List<Customer> findByEmail(String email) {
+		return customerRepository.findByEmail(email);
+	}
+	@Override
+	public List<Customer> findByMobileNumber(String mobileNumber) {
+		return customerRepository.findByMobileNumber(mobileNumber);
+	}
+	@Override
+	public List<Customer> findByEmailOrMobileNumber(String email, String mobileNumber) {
+		return customerRepository.findByEmailOrMobileNumber(email,mobileNumber);
+	}
+	@Override
+	public List<Customer> findCustomerByQuery(String query) {
+		return customerRepository.findCustomerByQuery(query);
+	}
 }

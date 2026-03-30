@@ -1,6 +1,9 @@
 package com.coforge.security;
 import java.io.IOException;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,11 +22,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
  
     @Autowired
     private JwtUtil jwtUtil;
+    
+	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     @Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     	String path = request.getServletPath();
-    	return !path.startsWith("/auth");
+    	return !path.startsWith("/auth") && !path.startsWith("/admin");
 	}
 
 	@Override
@@ -38,10 +43,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
  
             if (jwtUtil.validateToken(token)) {
-                String email = jwtUtil.extractEmail(token);
+//                String email = jwtUtil.extractEmail(token);
                 CustomerJWTTokenDto customer = jwtUtil.extractCustomer(token);
-                System.out.println("hello4" + email);
-                System.out.println(customer);
+                
+                if(request.getServletPath().startsWith("/admin") && !customer.getRole().equals("ADMIN")) {
+                	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json");
+         
+                    response.getWriter().write("""
+                        {
+                          "status": 401,
+                          "error": "Unauthorized",
+                          "message": "You are not allowed to access this route"
+                        }
+                    """);
+         
+                    return;
+                }
+                
+                logger.info("Authorised User: {} {} {}",customer.getCustName(),customer.getMobileNumber(),customer.getEmail());
+                
                 UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(
 //                        email, null, Collections.emptyList()

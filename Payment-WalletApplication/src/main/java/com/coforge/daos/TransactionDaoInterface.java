@@ -12,5 +12,6 @@ public interface TransactionDaoInterface {
 	 public List<Transaction> viewAllTransaction();
 	  public Transaction findTransactionById(long id);
     public List<Transaction> viewTransactionByDate(LocalDate from, LocalDate to);
+	List<Transaction> viewTransactionByMonth(int month, int year);
 
 }

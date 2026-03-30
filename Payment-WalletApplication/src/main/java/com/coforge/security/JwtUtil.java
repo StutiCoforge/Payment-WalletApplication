@@ -3,9 +3,11 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.coforge.dtos.CustomerJWTTokenDto;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -14,8 +16,10 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtUtil
 {
-	private static final long EXPIRATION_TIME = 1000 * 60 * 60;
+	private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 60 * 24;
 	private final Key key;
+	
+
 	
 	public JwtUtil(@Value("${jwt.secret}") String secret) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
@@ -26,6 +30,7 @@ public class JwtUtil
 		claims.put("custName",customer.getCustName());
 		claims.put("mobileNumber",customer.getMobileNumber());
 		claims.put("email",customer.getEmail());
+		claims.put("role",customer.getRole());
         return Jwts.builder()
             .setSubject(customer.getEmail())
             .setClaims(claims)
@@ -56,7 +61,8 @@ public class JwtUtil
         claims.get("custId", Long.class),
         claims.get("custName", String.class),
         claims.get("mobileNumber", String.class),
-        claims.get("email", String.class));
+        claims.get("email", String.class),
+    	claims.get("role", String.class));
     }
 
     public boolean validateToken(String token) {

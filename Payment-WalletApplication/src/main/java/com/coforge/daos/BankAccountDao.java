@@ -19,6 +19,11 @@ public class BankAccountDao implements BankAccountDaoInterface {
 	}
 
 	@Override
+	public List<BankAccount> getAllBankAccountsByQuery(String query) {
+		return bankAccountRepository.findBankAccountByQuery(query);
+	}
+
+	@Override
 	public Optional<BankAccount> getBankAccountByAccountId(long bankAccountId) {
 		return bankAccountRepository.findById(bankAccountId);
 	}
