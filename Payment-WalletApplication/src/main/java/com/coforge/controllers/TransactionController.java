@@ -32,15 +32,15 @@ public class TransactionController {
     }
 
     // ✅ 2. Update Transaction (SUCCESS / FAILED)
-    @PutMapping
-    public ResponseEntity<Transaction> updateTransaction(@RequestBody Transaction tx) {
-        return ResponseEntity.ok(transactionService.updateTransaction(tx));
-    }
+//    @PutMapping
+//    public ResponseEntity<Transaction> updateTransaction(@RequestBody Transaction tx) {
+//        return ResponseEntity.ok(transactionService.updateTransaction(tx));
+//    }
 
     // ✅ 3. View ALL transactions
     @GetMapping("/all")
     public ResponseEntity<List<TransactionDto>> getAllTransactions() {
-        return ResponseEntity.ok(transactionService.viewAllTransaction());
+        return ResponseEntity.ok(transactionService.viewAllTransactionCustomer());
     }
 
     // ✅ 4. View transactions between two dates
@@ -52,7 +52,8 @@ public class TransactionController {
         LocalDate f = LocalDate.parse(from);
         LocalDate t = LocalDate.parse(to);
 
-        return ResponseEntity.ok(transactionService.viewTransactionByDate(f, t));
+//        return ResponseEntity.ok(transactionService.viewTransactionByDate(f, t));
+        return ResponseEntity.ok(transactionService.viewTransactionByDateCustomer(f, t));
     }
 
     // ✅ 5. View transactions by CATEGORY
@@ -60,7 +61,7 @@ public class TransactionController {
     public ResponseEntity<List<TransactionDto>> getByCategory(
             @PathVariable TransactionCategory category
     ) {
-        return ResponseEntity.ok(transactionService.getByCategory(category));
+        return ResponseEntity.ok(transactionService.getByCategoryCustomer(category));
     }
 
     // ✅ 6. View transactions by SUBCATEGORY
@@ -68,7 +69,7 @@ public class TransactionController {
     public ResponseEntity<List<TransactionDto>> getBySubCategory(
             @PathVariable TransactionSubCategory sub
     ) {
-        return ResponseEntity.ok(transactionService.getBySubCategory(sub));
+        return ResponseEntity.ok(transactionService.getBySubCategoryCustomer(sub));
     }
 
 //    // ✅ 7. Customer → View their own transactions by CATEGORY

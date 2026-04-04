@@ -75,10 +75,22 @@ public class TransactionDao implements TransactionDaoInterface {
     @Override
     public List<Transaction> viewTransactionByDate(LocalDate from, LocalDate to) {
         String jpql = "SELECT * FROM Transaction WHERE transactionDate is BETWEEN ? AND ?";
+ 
+//        return entityManager.createQuery(jpql, Transaction.class)
+//                .setParameter("from", from)
+//                .setParameter("to", to)
+//                .getResultList();
+      return transactionRepository.findByTransactionDateBetween(from, to);
+    }
 
-        return entityManager.createQuery(jpql, Transaction.class)
-                .setParameter("from", from)
-                .setParameter("to", to)
-                .getResultList();
-}
+    public List<Transaction> viewTransactionByDateCustomer(LocalDate from, LocalDate to,long customer) {
+    	String jpql = "SELECT * FROM Transaction WHERE transactionDate is BETWEEN ? AND ?";
+    	
+//        return entityManager.createQuery(jpql, Transaction.class)
+//                .setParameter("from", from)
+//                .setParameter("to", to)
+//                .getResultList();
+//    	System.out.println(customer);
+    	return transactionRepository.findByCustomerCustIdAndTransactionDateBetween(customer,from, to);
+    }
 }

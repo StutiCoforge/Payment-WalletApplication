@@ -31,14 +31,15 @@ public class BeneficiaryController {
 		}
 		
 		@PostMapping("/beneficiary")
-		public ResponseEntity<Beneficiary> saveBeneficiary(@RequestBody Beneficiary beneficiary) {
+		public ResponseEntity<String> saveBeneficiary(@RequestBody Beneficiary beneficiary) {
 
 
 	    //Student student = new Student();
 	   
 	    //student.setDob(service.parseDob(student.getDob())); // manual DOB parsing
+			service.addBeneficiary(beneficiary);
 
-			return new ResponseEntity<Beneficiary>(service.addBeneficiary(beneficiary),HttpStatus.CREATED);
+			return new ResponseEntity<>("Beneficiary Added",HttpStatus.CREATED);
 		}
 		@GetMapping("/beneficiary/{cid}")
 		public ResponseEntity<Beneficiary> getBeneficiaryById(@PathVariable("cid")long cid) {

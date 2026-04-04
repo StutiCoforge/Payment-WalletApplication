@@ -34,6 +34,12 @@ public class TransactionService implements TransactionServiceInterface {
     @Autowired
     private TransactionDao transactionDao;
 
+    @Autowired
+    private CustomerService customerService;
+    
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     private TransactionDto toDto(Transaction tx) {
           TransactionDto dto = new TransactionDto();
           dto.setTransactionId(tx.getTransactionId());
@@ -105,6 +111,16 @@ public class TransactionService implements TransactionServiceInterface {
                    .collect(Collectors.toList());
        }
 
+       public List<TransactionDto> viewAllTransactionCustomer() {
+    	   Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	   CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
+    	   return transactionRepository
+    			   .findAllByCustomerCustId(customer.getCustId())
+    			   .stream()
+    			   .map(this::toDto)
+    			   .collect(Collectors.toList());
+       }
+
 
 @Override
 public List<TransactionDto> viewTransactionByDate(LocalDate from, LocalDate to) {
@@ -117,6 +133,18 @@ public List<TransactionDto> viewTransactionByDate(LocalDate from, LocalDate to) 
     return transactions.stream()
             .map(this::toDto)
             .toList();
+}
+
+public List<TransactionDto> viewTransactionByDateCustomer(LocalDate from, LocalDate to) {
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
+//	Customer customer2 = customerService.getById(customer.getCustId());
+	List<Transaction> transactions =
+			transactionDao.viewTransactionByDateCustomer(from, to,customer.getCustId());
+	
+	return transactions.stream()
+			.map(this::toDto)
+			.toList();
 }
 
 
@@ -132,6 +160,17 @@ public List<TransactionDto> viewTransactionByDate(LocalDate from, LocalDate to) 
             .toList();
     }
 
+public List<TransactionDto> getByCategoryCustomer(TransactionCategory category) {
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
+	List<Transaction> transactions =
+			transactionRepository.findByCategoryAndCustomerCustId(category,customer.getCustId());
+	
+	return transactions.stream()
+			.map(this::toDto)
+			.toList();
+}
+
    
     @Override
     public List<TransactionDto> getBySubCategory(TransactionSubCategory subCategory) {
@@ -143,6 +182,17 @@ transactionDao.getBySubCategory(subCategory);
         .map(this::toDto)
         .toList();
         
+    }
+
+    public List<TransactionDto> getBySubCategoryCustomer(TransactionSubCategory subCategory) {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
+    	List<Transaction> transactions =
+    			transactionRepository.findBySubCategoryAndCustomerCustId(subCategory,customer.getCustId());
+    	return transactions.stream()
+    			.map(this::toDto)
+    			.toList();
+    	
     }
     @Override
     public List<TransactionDto> getCustomerTransactionsByCategory(Long custId, TransactionCategory category) {
