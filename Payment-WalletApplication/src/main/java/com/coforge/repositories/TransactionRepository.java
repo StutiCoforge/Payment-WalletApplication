@@ -14,7 +14,6 @@ import com.coforge.entities.TransactionCategory;
 import com.coforge.entities.TransactionSubCategory;
 public interface TransactionRepository extends JpaRepository<Transaction, Long>{
 	
-		List<Transaction> findAllByCustomerCustId(long customer);
 		
 	    List<Transaction> findByCategory(TransactionCategory category);
 	    List<Transaction> findByCategoryAndCustomerCustId(TransactionCategory category,long customer);

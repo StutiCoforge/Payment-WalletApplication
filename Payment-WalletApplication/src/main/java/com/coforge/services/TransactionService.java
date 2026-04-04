@@ -186,16 +186,6 @@ transactionDao.getBySubCategory(subCategory);
     			.toList();
     }
 
-    public List<TransactionDto> getBySubCategoryCustomer(TransactionSubCategory subCategory) {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
-    	List<Transaction> transactions =
-    			transactionRepository.findBySubCategoryAndCustomerCustId(subCategory,customer.getCustId());
-    	return transactions.stream()
-    			.map(this::toDto)
-    			.toList();
-    	
-    }
     @Override
     public List<TransactionDto> getCustomerTransactionsByCategory(Long custId, TransactionCategory category) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
