@@ -39,7 +39,7 @@ public class BeneficiaryController {
 	    //student.setDob(service.parseDob(student.getDob())); // manual DOB parsing
 			service.addBeneficiary(beneficiary);
 
-			return new ResponseEntity<>("Beneficiary Added",HttpStatus.CREATED);
+			return new ResponseEntity<String>(service.addBeneficiary(beneficiary),HttpStatus.CREATED);
 		}
 		@GetMapping("/beneficiary/{cid}")
 		public ResponseEntity<Beneficiary> getBeneficiaryById(@PathVariable("cid")long cid) {

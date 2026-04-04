@@ -518,3 +518,5 @@
 2026-03-30 15:48:40 INFO  com.coforge.filters.LoggingFilter - Request /auth/transactions/all GET 
 2026-03-30 15:51:03 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543238 gaurav32@mail.com
 2026-03-30 15:51:03 INFO  com.coforge.filters.LoggingFilter - Request /auth/transactions/category/BENEFICIARY_TRANSFER GET 
+2026-03-31 14:16:41 INFO  com.coforge.PaymentWalletApplication - Starting PaymentWalletApplication using Java 21.0.10 with PID 16808 (C:\Users\Shivaya.Gupta\OneDrive - Coforge Limited\Desktop\clone 4\Payment-WalletApplication\Payment-WalletApplication\target\classes started by Shivaya.Gupta in C:\Users\Shivaya.Gupta\OneDrive - Coforge Limited\Desktop\clone 4\Payment-WalletApplication\Payment-WalletApplication)
+2026-03-31 14:16:41 INFO  com.coforge.PaymentWalletApplication - No active profile set, falling back to 1 default profile: "default"

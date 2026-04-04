@@ -78,7 +78,6 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 		
 		BillPayment billPayment = new BillPayment();
 		String description="Bill Payment "+billPaymentRequestDto.getBillType();
-		
 		if(billPaymentRequestDto.getBillType().equals(BillType.ELECTRICITY)){
 			description+= " -> state: "+billPaymentRequestDto.getBillData().get("state");
 			description+= " billerName: "+billPaymentRequestDto.getBillData().get("billerName");
