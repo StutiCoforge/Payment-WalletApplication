@@ -1,48 +1,48 @@
 package com.coforge.controllers;
-
-
+ 
+ 
 import java.time.LocalDate;
 import java.util.List;
-
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+ 
 import com.coforge.dtos.TransactionDto;
 import com.coforge.entities.Transaction;
 import com.coforge.entities.TransactionCategory;
 import com.coforge.entities.TransactionSubCategory;
-
+ 
 import com.coforge.services.TransactionService;
-
+ 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
+ 
 @RestController
 @RequestMapping("/auth/transactions")
 public class TransactionController {
-
+ 
     @Autowired
     private TransactionService transactionService;
-
+ 
     // ✅ 1. Add Transaction
     @PostMapping
     public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction tx) {
         return ResponseEntity.ok(transactionService.addTransaction(tx));
     }
-
+ 
     // ✅ 2. Update Transaction (SUCCESS / FAILED)
     @PutMapping
     public ResponseEntity<Transaction> updateTransaction(@RequestBody Transaction tx) {
         return ResponseEntity.ok(transactionService.updateTransaction(tx));
     }
-
+ 
     // ✅ 3. View ALL transactions
     @GetMapping("/all")
     public ResponseEntity<List<TransactionDto>> getAllTransactions() {
-        return ResponseEntity.ok(transactionService.viewAllTransaction());
+        return ResponseEntity.ok(transactionService.viewAllTransactionCustomer());
     }
-
+ 
     // ✅ 4. View transactions between two dates
     @GetMapping("/dates")
     public ResponseEntity<List<TransactionDto>> getByDate(
@@ -51,26 +51,27 @@ public class TransactionController {
     ) {
         LocalDate f = LocalDate.parse(from);
         LocalDate t = LocalDate.parse(to);
-
-        return ResponseEntity.ok(transactionService.viewTransactionByDate(f, t));
+ 
+//        return ResponseEntity.ok(transactionService.viewTransactionByDate(f, t));
+        return ResponseEntity.ok(transactionService.viewTransactionByDateCustomer(f, t));
     }
-
+ 
     // ✅ 5. View transactions by CATEGORY
     @GetMapping("/category/{category}")
     public ResponseEntity<List<TransactionDto>> getByCategory(
             @PathVariable TransactionCategory category
     ) {
-        return ResponseEntity.ok(transactionService.getByCategory(category));
+        return ResponseEntity.ok(transactionService.getByCategoryCustomer(category));
     }
-
+ 
     // ✅ 6. View transactions by SUBCATEGORY
     @GetMapping("/subcategory/{sub}")
     public ResponseEntity<List<TransactionDto>> getBySubCategory(
             @PathVariable TransactionSubCategory sub
     ) {
-        return ResponseEntity.ok(transactionService.getBySubCategory(sub));
+        return ResponseEntity.ok(transactionService.getBySubCategoryCustomer(sub));
     }
-
+ 
 //    // ✅ 7. Customer → View their own transactions by CATEGORY
 //    @GetMapping("/my/category/{category}")
 //    public ResponseEntity<List<Transaction>> getMyTransactionsByCategory(
@@ -92,7 +93,7 @@ public class TransactionController {
 //                transactionService.getCustomerTransactionsBySubCategory(customer.getCustId(), sub)
 //        );
 //    }
-
+ 
 @GetMapping("/month")
     public ResponseEntity<List<TransactionDto>> getByMonth(
             @RequestParam int month,
@@ -100,5 +101,9 @@ public class TransactionController {
     ) {
         return ResponseEntity.ok(transactionService.viewTransactionByMonth(month, year));
     }
-
+@DeleteMapping("/{id}")
+public ResponseEntity<String> deleteTransaction(@PathVariable Long id) {
+    String msg = transactionService.deleteTransaction(id);
+    return ResponseEntity.ok(msg);
+}
 }

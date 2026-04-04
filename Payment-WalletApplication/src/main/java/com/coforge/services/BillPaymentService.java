@@ -78,7 +78,19 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 		
 		BillPayment billPayment = new BillPayment();
 		String description="Bill Payment "+billPaymentRequestDto.getBillType();
-
+		if(billPaymentRequestDto.getBillType().equals(BillType.ELECTRICITY)){
+			description+= " -> state: "+billPaymentRequestDto.getBillData().get("state");
+			description+= " billerName: "+billPaymentRequestDto.getBillData().get("billerName");
+			description+= " accountNumber: "+billPaymentRequestDto.getBillData().get("accountNumber");
+		}
+		else if(billPaymentRequestDto.getBillType().equals(BillType.GAS_BOOKING)){
+			description+= " -> gasProvider: "+billPaymentRequestDto.getBillData().get("gasProvider");
+			description+= " customerNumber: "+billPaymentRequestDto.getBillData().get("customerNumber");
+		}
+		else if(billPaymentRequestDto.getBillType().equals(BillType.MOBILE_RECHARGE)){
+			description+= " -> mobileNumber: "+billPaymentRequestDto.getBillData().get("mobileNumber");
+			description+= " operator: "+billPaymentRequestDto.getBillData().get("operator");
+		}
 		Transaction trans = new Transaction(
 		    "DEBIT",
 		    "PENDING",

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coforge.dtos.TransactionDto;
 import com.coforge.entities.TransactionCategory;
 import com.coforge.entities.TransactionSubCategory;
+import com.coforge.services.TransactionAdminService;
 import com.coforge.services.TransactionService;
 
 @RestController
@@ -22,7 +23,7 @@ public class TransactionAdminController {
     // ✅ 3. View ALL transactions
 
     @Autowired
-    private TransactionService transactionService;
+    private TransactionAdminService transactionService;
 
     @GetMapping("/all")
     public ResponseEntity<List<TransactionDto>> getAllTransactions() {
@@ -56,10 +57,10 @@ public class TransactionAdminController {
     ) {
         return ResponseEntity.ok(transactionService.getBySubCategory(sub));
     }
-//
-////    // ✅ 7. Customer → View their own transactions by CATEGORY
+
+//    // ✅ 7. Customer → View their own transactions by CATEGORY
 //    @GetMapping("/my/category/{category}")
-//    public ResponseEntity<List<Transaction>> getMyTransactionsByCategory(
+//    public ResponseEntity<List<TransactionDto>> getMyTransactionsByCategory(
 //            @PathVariable TransactionCategory category
 //    ) {
 //       
@@ -70,7 +71,7 @@ public class TransactionAdminController {
 //
 //    // ✅ 8. Customer → View their own transactions by SUBCATEGORY
 //    @GetMapping("/my/subcategory/{sub}")
-//    public ResponseEntity<List<Transaction>> getMyTransactionsBySubCategory(
+//    public ResponseEntity<List<TransactionDto>> getMyTransactionsBySubCategory(
 //            @PathVariable TransactionSubCategory sub
 //    ) {
 //       
