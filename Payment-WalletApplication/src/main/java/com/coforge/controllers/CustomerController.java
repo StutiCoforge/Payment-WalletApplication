@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coforge.dtos.CustomerDto;
 import com.coforge.dtos.CustomerJWTTokenDto;
+import com.coforge.dtos.CustomerResponseDto;
 import com.coforge.dtos.LoginRequestDto;
 import com.coforge.dtos.LoginResponseDto;
 import com.coforge.dtos.SendOtpRequestDto;
@@ -37,7 +38,7 @@ public class CustomerController
 	@Autowired
 	private JwtUtil jwtUtil;
 	@GetMapping("/admin/customers")
-	public ResponseEntity<List<CustomerDto>> getAllCustomer()
+	public ResponseEntity<List<CustomerResponseDto>> getAllCustomer()
 	{
 		return new ResponseEntity<> (customerService.getAllCustomer(), HttpStatus.OK);
 	}
@@ -58,6 +59,14 @@ public class CustomerController
 	{
 		Customer customer = customerService.login(loginDto.getEmail(), loginDto.getPwd());
 		String token = jwtUtil.generateToken(new CustomerJWTTokenDto(customer.getCustId(),customer.getCustName(),customer.getMobileNumber(),customer.getEmail(),customer.getRole()));
+		return new ResponseEntity<> (new LoginResponseDto(token, customer.getEmail()), HttpStatus.OK);
+	}
+
+	@PostMapping("/customers/admin/login")
+	public ResponseEntity<LoginResponseDto> loginAdmin(@RequestBody LoginRequestDto loginDto)
+	{
+		CustomerResponseDto customer = customerService.loginAdmin(loginDto.getEmail(), loginDto.getPwd());
+		String token = jwtUtil.generateToken(new CustomerJWTTokenDto(customer.getCustId(),customer.getCustName(),customer.getMobileNumber(),customer.getEmail(),"ADMIN"));
 		return new ResponseEntity<> (new LoginResponseDto(token, customer.getEmail()), HttpStatus.OK);
 	}
 

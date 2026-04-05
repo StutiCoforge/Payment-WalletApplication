@@ -51,6 +51,15 @@ public class TransactionAdminController {
     ) {
         return ResponseEntity.ok(transactionService.getByCategory(category));
     }
+    
+    @GetMapping("/category/{category}/dates")
+    public ResponseEntity<List<TransactionDto>> getByCategoryAndDate(
+    		@PathVariable TransactionCategory category,
+    		@RequestParam("from") LocalDate from,
+            @RequestParam("to") LocalDate to
+    		) {
+    	return ResponseEntity.ok(transactionService.getCustomerTransactionsByCategoryAndDate(category,from,to));
+    }
 
     // ✅ 6. View transactions by SUBCATEGORY
     @GetMapping("/subcategory/{sub}")
@@ -58,6 +67,15 @@ public class TransactionAdminController {
             @PathVariable TransactionSubCategory sub
     ) {
         return ResponseEntity.ok(transactionService.getBySubCategory(sub));
+    }
+    
+    @GetMapping("/subcategory/{sub}/dates")
+    public ResponseEntity<List<TransactionDto>> getByCategoryAndDate(
+    		@PathVariable TransactionSubCategory sub,
+    		@RequestParam("from") LocalDate from,
+            @RequestParam("to") LocalDate to
+    		) {
+    	return ResponseEntity.ok(transactionService.getCustomerTransactionsBySubCategoryAndDate(sub,from,to));
     }
 
 //    // ✅ 7. Customer → View their own transactions by CATEGORY

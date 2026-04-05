@@ -57,7 +57,7 @@ export class AdminCustomersComponent implements OnInit {
   delete(id: number) {
     if (!confirm('Delete this customer? This cannot be undone.')) return;
     this.svc.delete(id).subscribe({
-      next: (msg) => { this.successMsg = msg; this.load(); },
+      next: (msg) => { this.successMsg = "Deleted Successfully"; this.load(); },
       error: () => { this.error = 'Delete failed.'; }
     });
   }

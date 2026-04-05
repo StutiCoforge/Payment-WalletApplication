@@ -81,7 +81,8 @@ Beneficiary b = dao.saveBeneficiary(beneficiary);
 			} catch (BeneficiaryException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return null;
+//				return null;
+				throw e;
 			}
 		
 		}
@@ -171,7 +172,7 @@ Beneficiary b = dao.saveBeneficiary(beneficiary);
 	        	transaction.setTransactionStatus("FAILED");
 
 	            transactionService.updateTransaction(transaction);
-		        return "Transaction failed";
+	            throw e;
 	        }
 	 
 	        return "Transaction processed";

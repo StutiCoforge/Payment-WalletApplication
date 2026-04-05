@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Transaction, TransactionCategory } from '../models/transaction.model';
+import { Transaction, TransactionCategory, TransactionSubCategory } from '../models/transaction.model';
 import { AdminAuthService } from './admin-auth.service';
 
 @Injectable({ providedIn: 'root' })
@@ -24,6 +24,24 @@ export class AdminTransactionService {
 
   getByCategory(category: TransactionCategory): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/admin/transactions/category/${category}`, {
+      headers: this.adminAuth.getAuthHeaders()
+    });
+  }
+
+  getByCategoryAndDate(category: TransactionCategory,from: string, to: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.base}/admin/transactions/category/${category}/dates?from=${from}&to=${to}`, {
+      headers: this.adminAuth.getAuthHeaders()
+    });
+  }
+  
+  getBySubCategory(category: TransactionSubCategory): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.base}/admin/transactions/subcategory/${category}`, {
+      headers: this.adminAuth.getAuthHeaders()
+    });
+  }
+
+  getBySubCategoryAndDate(subcategory: TransactionSubCategory,from: string, to: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.base}/admin/transactions/subcategory/${subcategory}/dates?from=${from}&to=${to}`, {
       headers: this.adminAuth.getAuthHeaders()
     });
   }

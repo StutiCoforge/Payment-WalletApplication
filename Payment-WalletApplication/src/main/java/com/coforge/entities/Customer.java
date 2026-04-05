@@ -42,7 +42,7 @@ public class Customer{
 	private String custName;
 	@NotEmpty
 	@Column(unique=true)
-	@Pattern(regexp = "\\d{10}", message = "Mobile number must be exactly 10 digits")
+	@Pattern(regexp = "[6-9][0-9]{9}", message = "Mobile number must be exactly 10 digits")
 	private String mobileNumber;
 	@NotEmpty
 	@Column(unique=true)

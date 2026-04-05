@@ -41,7 +41,7 @@ export class BankAccountComponent implements OnInit {
         this.form = { accountNo: '', ifscCode: '', bankname: ''};
         this.load();
       },
-      error: () => { this.error = 'Failed to add account.'; }
+      error: () => { this.error = 'Failed to add account. Please Enter Valid Information'; }
     });
   }
 

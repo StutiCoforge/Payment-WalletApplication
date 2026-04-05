@@ -15,7 +15,7 @@ export class AdminLayoutComponent {
   navItems = [
     { label: 'Overview', route: '/admin', icon: 'grid', exact: true },
     { label: 'Customers', route: '/admin/customers', icon: 'users', exact: false },
-    { label: 'Wallets', route: '/admin/wallets', icon: 'wallet', exact: false },
+    // { label: 'Wallets', route: '/admin/wallets', icon: 'wallet', exact: false },
     { label: 'Bank Accounts', route: '/admin/bank-accounts', icon: 'bank', exact: false },
     { label: 'Beneficiaries', route: '/admin/beneficiaries', icon: 'people', exact: false },
     { label: 'Bill Payments', route: '/admin/bill-payments', icon: 'receipt', exact: false },

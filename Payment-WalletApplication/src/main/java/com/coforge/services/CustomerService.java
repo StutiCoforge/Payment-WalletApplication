@@ -10,12 +10,17 @@ import org.springframework.stereotype.Service;
 import com.coforge.daos.CustomerDao;
 import com.coforge.dtos.CustomerDto;
 import com.coforge.dtos.CustomerJWTTokenDto;
+import com.coforge.dtos.CustomerResponseDto;
 import com.coforge.dtos.WalletDto;
 import com.coforge.entities.BankAccount;
 import com.coforge.entities.Customer;
+import com.coforge.entities.Transaction;
 import com.coforge.entities.Wallet;
 import com.coforge.exception.CustomerAlreadyExistsException;
 import com.coforge.exception.CustomerNotFoundException;
+import com.coforge.repositories.TransactionRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CustomerService implements CustomerServiceInterface
@@ -24,16 +29,19 @@ public class CustomerService implements CustomerServiceInterface
 	private CustomerDao customerDao;
 	
 	@Autowired
+	private TransactionRepository transactionRepository;
+	
+	@Autowired
 	private WalletServiceImpl walletService;
 	
 	@Override
-	public List<CustomerDto> getAllCustomer()
+	public List<CustomerResponseDto> getAllCustomer()
 	{
-		List<CustomerDto> customers =  customerDao.getAllCustomer().stream().map(
+		List<CustomerResponseDto> customers =  customerDao.getAllCustomer().stream().map(
 				(c)->{
 					Wallet wallet = walletService.getWalletByCustomerId(c.getCustId());
-					WalletDto w = new WalletDto(wallet.getWalletId(),wallet.getBalance(),wallet.getBeneficiary());
-					return new CustomerDto(c.getCustId(),c.getCustName(),c.getMobileNumber(),c.getEmail(),w);	
+//					WalletDto w = new WalletDto(wallet.getWalletId(),wallet.getBalance(),wallet.getBeneficiary());
+					return new CustomerResponseDto(c.getCustId(),c.getCustName(),c.getMobileNumber(),c.getEmail());	
 				}).collect(Collectors.toList());
 		
 		return customers;
@@ -103,9 +111,13 @@ public class CustomerService implements CustomerServiceInterface
 	}
 
 	@Override
+	@Transactional
 	public void deleteCustomer(long customerId)
 	{
+		transactionRepository.deleteByCustomerCustId(customerId);
+		System.out.println("Transactions deleted");
 		customerDao.deleteCustomer(customerId);
+		System.out.println("Customer deleted");
 	}
 
 	@Override
@@ -137,5 +149,15 @@ public class CustomerService implements CustomerServiceInterface
 					WalletDto w = new WalletDto(wallet.getWalletId(),wallet.getBalance(),wallet.getBeneficiary());
 					return new CustomerDto(c.getCustId(),c.getCustName(),c.getMobileNumber(),c.getEmail(),w);	
 				}).collect(Collectors.toList());
+	}
+
+	@Override
+	public CustomerResponseDto loginAdmin(String email, String pwd) {
+		if(email.equals("admin@mail.com")&&pwd.equals("admin@123")){
+			return new CustomerResponseDto(0,"ADMIN","8888888888","admin@mail.com");
+		}
+		else {
+			throw new CustomerNotFoundException("Invalid Email or password");
+		}
 	}
 }

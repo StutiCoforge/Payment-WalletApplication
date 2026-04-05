@@ -233,6 +233,34 @@ transactionDao.getBySubCategory(subCategory);
 
          return "Transaction deleted successfully with ID: " + txId;
      }
+
+
+
+
+	 @Override
+	 public List<TransactionDto> getCustomerTransactionsByCategoryAndDateCustomer(TransactionCategory category,
+			LocalDate from, LocalDate to) {
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
+		// TODO Auto-generated method stub
+		return transactionRepository.findByCategoryAndTransactionDateBetweenAndCustomerCustId(category, from, to,customer.getCustId()).stream()
+    	        .map(this::toDto)
+    	        .toList();
+	 }
+
+
+
+	 @Override
+	 public List<TransactionDto> getCustomerTransactionsBySubCategoryAndDateCustomer(TransactionSubCategory category,
+			LocalDate from, LocalDate to) {
+		// TODO Auto-generated method stub
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+         CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
+         
+		return transactionRepository.findBySubCategoryAndTransactionDateBetweenAndCustomerCustId(category, from, to,customer.getCustId()).stream()
+    	        .map(this::toDto)
+    	        .toList();
+	 }
  
  
 	

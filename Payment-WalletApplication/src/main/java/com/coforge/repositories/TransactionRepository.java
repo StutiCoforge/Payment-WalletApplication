@@ -17,6 +17,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
 		
 	    List<Transaction> findByCategory(TransactionCategory category);
 	    List<Transaction> findByCategoryAndCustomerCustId(TransactionCategory category,long customer);
+	    List<Transaction> findByCategoryAndTransactionDateBetweenAndCustomerCustId(TransactionCategory category,LocalDate from, LocalDate to,long customer);
+	    List<Transaction> findBySubCategoryAndTransactionDateBetweenAndCustomerCustId(TransactionSubCategory subCategory,LocalDate from, LocalDate to,long customer);
+
+	    List<Transaction> findByCategoryAndTransactionDateBetween(TransactionCategory category,LocalDate from, LocalDate to);
+	    List<Transaction> findBySubCategoryAndTransactionDateBetween(TransactionSubCategory subCategory,LocalDate from, LocalDate to);
 
 	    List<Transaction> findBySubCategory(TransactionSubCategory subCategory);
 	    List<Transaction> findBySubCategoryAndCustomerCustId(TransactionSubCategory subCategory,long customer);
@@ -32,6 +37,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>{
 @Query("SELECT t FROM Transaction t WHERE MONTH(t.transactionDate) = :month AND YEAR(t.transactionDate) = :year")
 List<Transaction> findByMonthAndYear(@Param("month") int month, @Param("year") int year);
 List<Transaction> findAllByCustomerCustId(long customer);
+		
+		
+		void deleteByCustomerCustId(long custId);
  
 //		@Query("SELECT t FROM Trasnaction t JOIN t.customer c WHERE c.custName LIKE %:query% OR c.mobileNumber LIKE %:query% OR c.email LIKE %:query%")
 //		List<Transaction> searchTransactions(@Param("query") String query);
