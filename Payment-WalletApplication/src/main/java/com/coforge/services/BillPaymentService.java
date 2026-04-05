@@ -106,10 +106,13 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 		try {
 			billPayment = convertBillPaymentRequestDtoToBillPayment(billPaymentRequestDto);
 			billPayment.setWallet(wallet);
+			billPayment.setPaymentDate(LocalDateTime.now());
 //			System.out.println(billPayment);
 			walletService.debit(wallet.getWalletId(), BigDecimal.valueOf(billPaymentRequestDto.getAmount()));
 			
 			BillPayment b = billPaymentDao.saveBillPayment(billPayment);
+			System.out.println(b.getBillId());
+			System.out.println(b.getPaymentDate());
 			transaction.setTransactionStatus("SUCCESS");
             transactionService.updateTransaction(transaction);
             

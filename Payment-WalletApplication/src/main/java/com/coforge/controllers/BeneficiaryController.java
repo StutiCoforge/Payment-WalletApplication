@@ -1,11 +1,13 @@
 package com.coforge.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import com.coforge.services.BeneficiaryService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin
 public class BeneficiaryController {
 	    @Autowired
 	   private BeneficiaryService service;
@@ -31,15 +34,15 @@ public class BeneficiaryController {
 		}
 		
 		@PostMapping("/beneficiary")
-		public ResponseEntity<String> saveBeneficiary(@RequestBody Beneficiary beneficiary) {
+		public ResponseEntity<Map<String,String>> saveBeneficiary(@RequestBody Beneficiary beneficiary) {
 
 
 	    //Student student = new Student();
 	   
 	    //student.setDob(service.parseDob(student.getDob())); // manual DOB parsing
-			service.addBeneficiary(beneficiary);
+			String response = service.addBeneficiary(beneficiary);
 
-			return new ResponseEntity<String>(service.addBeneficiary(beneficiary),HttpStatus.CREATED);
+			return new ResponseEntity<>(Map.of("message",response),HttpStatus.CREATED);
 		}
 		@GetMapping("/beneficiary/{cid}")
 		public ResponseEntity<Beneficiary> getBeneficiaryById(@PathVariable("cid")long cid) {
@@ -47,10 +50,10 @@ public class BeneficiaryController {
 		}
 
 		@DeleteMapping("/beneficiary/{bid}")
-		public ResponseEntity<String> deleteBeneficiary(@PathVariable("bid") long bid) {
+		public ResponseEntity<Map<String,String>> deleteBeneficiary(@PathVariable("bid") long bid) {
 		  
 			service.deleteBeneficiary(bid);
-			return new ResponseEntity<>("Beneficiary deleted successfully",HttpStatus.OK);
+			return new ResponseEntity<>(Map.of("message","Beneficiary deleted successfully"),HttpStatus.OK);
 		}
 	
 	
@@ -74,10 +77,10 @@ public class BeneficiaryController {
 		
 
 		@PostMapping("/beneficiary/mobile/sendMoney/{mobileNumber}")
-		public ResponseEntity<String> transferMoneyToBeneficiaryByMobile(@Param("amount") String amount,@PathVariable("mobileNumber") String mobileNumber) {
+		public ResponseEntity<Map<String,String>> transferMoneyToBeneficiaryByMobile(@Param("amount") String amount,@PathVariable("mobileNumber") String mobileNumber) {
 			
 			String response = service.sendMoney(mobileNumber, Double.parseDouble(amount));
 			
-			return new ResponseEntity<>(response,HttpStatus.OK);
+			return new ResponseEntity<>(Map.of("message",response),HttpStatus.OK);
 		}
 }

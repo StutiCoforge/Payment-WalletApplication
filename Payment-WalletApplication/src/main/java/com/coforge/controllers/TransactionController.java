@@ -3,7 +3,8 @@ package com.coforge.controllers;
  
 import java.time.LocalDate;
 import java.util.List;
- 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
  
 @RestController
 @RequestMapping("/auth/transactions")
+@CrossOrigin
 public class TransactionController {
  
     @Autowired
@@ -102,8 +104,8 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.viewTransactionByMonth(month, year));
     }
 @DeleteMapping("/{id}")
-public ResponseEntity<String> deleteTransaction(@PathVariable Long id) {
+public ResponseEntity<Map<String,String>> deleteTransaction(@PathVariable Long id) {
     String msg = transactionService.deleteTransaction(id);
-    return ResponseEntity.ok(msg);
+    return ResponseEntity.ok(Map.of("message",msg));
 }
 }

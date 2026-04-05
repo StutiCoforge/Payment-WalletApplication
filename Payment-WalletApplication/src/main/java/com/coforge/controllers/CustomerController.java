@@ -1,9 +1,12 @@
 package com.coforge.controllers;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +19,21 @@ import com.coforge.dtos.CustomerDto;
 import com.coforge.dtos.CustomerJWTTokenDto;
 import com.coforge.dtos.LoginRequestDto;
 import com.coforge.dtos.LoginResponseDto;
+import com.coforge.dtos.SendOtpRequestDto;
 import com.coforge.entities.Customer;
 import com.coforge.security.JwtUtil;
 import com.coforge.services.CustomerService;
+import com.coforge.services.EmailService;
 @RestController
+@CrossOrigin
 public class CustomerController
 {
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private EmailService emailService;
+	
 	@Autowired
 	private JwtUtil jwtUtil;
 	@GetMapping("/admin/customers")
@@ -51,6 +61,13 @@ public class CustomerController
 		return new ResponseEntity<> (new LoginResponseDto(token, customer.getEmail()), HttpStatus.OK);
 	}
 
+	@PostMapping("/customers/send-otp")
+	public ResponseEntity<Map<String,String>> login(@RequestBody SendOtpRequestDto otpRequestDto)
+	{
+		String otp = emailService.sendOtp(otpRequestDto.getEmail());
+		return new ResponseEntity<> (Map.of("message","Otp Sent","otp",otp), HttpStatus.OK);
+	}
+
 	@GetMapping("/auth/customers/getDetails")
 	public ResponseEntity<CustomerDto> getDetails()
 	{
@@ -64,10 +81,10 @@ public class CustomerController
 		return new ResponseEntity<> (customerService.updateCustomer(customer, customerId), HttpStatus.OK);
 	}
 	@DeleteMapping("/admin/customers/{customerId}")
-	public ResponseEntity<String> deleteCustomer(@PathVariable("customerId") long customerId)
+	public ResponseEntity<Map<String,String>> deleteCustomer(@PathVariable("customerId") long customerId)
 	{
 		customerService.deleteCustomer(customerId);
-		return new ResponseEntity<>("Customer Deleted Successfully", HttpStatus.OK);
+		return new ResponseEntity<>(Map.of("message","Customer Deleted Successfully"), HttpStatus.OK);
 	}
 	
 	@GetMapping("/admin/customers/search")
