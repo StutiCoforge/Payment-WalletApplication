@@ -20,4 +20,6 @@ public interface BillPaymentDaoInterface {
 	public Optional<BillPayment> getBillPaymentByBillIdAndWalletId(long billId, long walletId);
 	public List<BillPayment> getAllBillPaymentsByBillTypeAndWalletId(BillType billType, long walletId);
 	public List<BillPayment> searchBillPayments(String query);
+	List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillType(LocalDateTime start, LocalDateTime end,BillType billtype);
+	List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillTypeAndWalletId(LocalDateTime start, LocalDateTime end,BillType billtype,long walletId);
 }

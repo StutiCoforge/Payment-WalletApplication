@@ -228,4 +228,19 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 	public List<BillPayment> searchBillPayments(String query) {
 		return billPaymentDao.searchBillPayments(query);
 	}
+
+	@Override
+	public List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillTypeCustomer(LocalDateTime start,
+			LocalDateTime end, BillType billtype) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+		Wallet wallet = walletService.getWalletByCustomerId(customerDto.getCustId());
+		return billPaymentDao.getAllBillPaymentsBetweenPaymentDateAndBillTypeAndWalletId(start,end,billtype,wallet.getWalletId());
+	}
+
+	@Override
+	public List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillType(LocalDateTime start, LocalDateTime end,
+			BillType billtype) {
+		return billPaymentDao.getAllBillPaymentsBetweenPaymentDateAndBillType(start,end,billtype);
+	}
 }

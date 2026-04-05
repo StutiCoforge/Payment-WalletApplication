@@ -67,6 +67,11 @@ public class BillPaymentDao implements BillPaymentDaoInterface {
 	}
 
 	@Override
+	public List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillType(LocalDateTime start, LocalDateTime end,BillType billtype) {
+		return billPaymentRepository.findAllByPaymentDateBetweenAndBillType(start, end,billtype);
+	}
+
+	@Override
 	public List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndWalletId(LocalDateTime start, LocalDateTime end,
 			long walletId) {
 		return billPaymentRepository.findAllByPaymentDateBetweenAndWalletWalletId(start, end, walletId);
@@ -75,6 +80,13 @@ public class BillPaymentDao implements BillPaymentDaoInterface {
 	@Override
 	public List<BillPayment> searchBillPayments(String query) {
 		return billPaymentRepository.searchBillPayments(query);
+	}
+
+	@Override
+	public List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillTypeAndWalletId(LocalDateTime start,
+			LocalDateTime end, BillType billtype, long walletId) {
+		
+		return billPaymentRepository.findAllByPaymentDateBetweenAndBillTypeAndWalletWalletId(start, end, billtype, walletId);
 	}
 
 }

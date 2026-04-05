@@ -66,6 +66,14 @@ public class BillPaymentController {
         return new ResponseEntity<>(billPayments,HttpStatus.CREATED);
 	}
 	
+	@GetMapping("/getBetween/{billType}")
+	public ResponseEntity<List<BillPaymentResponseDto>> getAllBillPaymentsBetweenDateByBillType(@PathVariable("billType") BillType billType,@Param("start") @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate start,@Param("end") LocalDate end){
+		List<BillPaymentResponseDto> billPayments =  billPaymentService.getAllBillPaymentsBetweenPaymentDateAndBillTypeCustomer(start.atStartOfDay(),end.plusDays(1).atStartOfDay(),billType).stream().map((b)->new BillPaymentResponseDto(b.getBillId(),b.getPaymentDate(),b.getAmount(),b.getBillType(),b.getBillData())).collect(Collectors.toList());
+		
+		return new ResponseEntity<>(billPayments,HttpStatus.CREATED);
+	}
+
+	
 	@GetMapping("/get/{billId}")
 	public ResponseEntity<BillPaymentResponseDto> getBillPayment(@PathVariable("billId") long billId){
 		BillPayment billPayment =  billPaymentService.getBillPaymentByBillIdCustomer(billId);

@@ -23,4 +23,8 @@ public interface BillPaymentServiceInterface {
 	public BillPayment getBillPaymentByBillIdCustomer(long billId);
 //	public BillPayment updateBillPaymentCustomer(BillPayment billPayment);
 	public void deleteBillPaymentCustomer(long billId);
+	List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillType(LocalDateTime start, LocalDateTime end,BillType billtype);
+	List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillTypeCustomer(LocalDateTime start, LocalDateTime end,BillType billtype);
+
+	
 }
