@@ -554,3 +554,6 @@
 2026-04-05 20:05:06 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/getAll GET 
 2026-04-05 20:05:16 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
 2026-04-05 20:05:16 INFO  com.coforge.filters.LoggingFilter - Request /auth/transactions/all GET 
+2026-04-05 20:16:15 INFO  com.coforge.PaymentWalletApplication - Starting PaymentWalletApplication using Java 21.0.10 with PID 23180 (C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication\target\classes started by Gaurav.Kuriyal in C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication)
+2026-04-05 20:16:15 INFO  com.coforge.PaymentWalletApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-05 20:16:20 INFO  com.coforge.PaymentWalletApplication - Started PaymentWalletApplication in 5.152 seconds (process running for 7308.186)
