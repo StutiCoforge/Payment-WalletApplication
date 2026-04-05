@@ -21,6 +21,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/admin/wallets")
+@CrossOrigin
 public class WalletAdminController {
 
     @Autowired
@@ -38,19 +39,19 @@ public class WalletAdminController {
     	return new ResponseEntity<>(new WalletDto(w.getWalletId(),w.getBalance(),w.getBeneficiary()),HttpStatus.OK);    
 	}
 
-    @PostMapping("/{walletId}/credit")
-    public Wallet credit(
-            @PathVariable Long walletId,
-            @Valid @RequestBody WalletAmountDto dto) {
-        return walletService.credit(walletId, dto.getAmount());
-    }
-
-    @PostMapping("/{walletId}/debit")
-    public Wallet debit(
-            @PathVariable Long walletId,
-            @Valid @RequestBody WalletAmountDto dto) {
-        return walletService.debit(walletId, dto.getAmount());
-    }
+//    @PostMapping("/{walletId}/credit")
+//    public Wallet credit(
+//            @PathVariable Long walletId,
+//            @Valid @RequestBody WalletAmountDto dto) {
+//        return walletService.credit(walletId, dto.getAmount());
+//    }
+//
+//    @PostMapping("/{walletId}/debit")
+//    public Wallet debit(
+//            @PathVariable Long walletId,
+//            @Valid @RequestBody WalletAmountDto dto) {
+//        return walletService.debit(walletId, dto.getAmount());
+//    }
     
     @GetMapping("/search")
     public ResponseEntity<List<WalletDto>> getWallet(@Param("query") String query) {

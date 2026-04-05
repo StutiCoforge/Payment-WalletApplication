@@ -78,7 +78,20 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 		
 		BillPayment billPayment = new BillPayment();
 		String description="Bill Payment "+billPaymentRequestDto.getBillType();
-
+		if(billPaymentRequestDto.getBillType().equals(BillType.ELECTRICITY)){
+			description+= " -> state: "+billPaymentRequestDto.getBillData().get("state");
+			description+= " billerName: "+billPaymentRequestDto.getBillData().get("billerName");
+			description+= " accountNumber: "+billPaymentRequestDto.getBillData().get("accountNumber");
+		}
+		else if(billPaymentRequestDto.getBillType().equals(BillType.GAS_BOOKING)){
+			description+= " -> gasProvider: "+billPaymentRequestDto.getBillData().get("gasProvider");
+			description+= " customerNumber: "+billPaymentRequestDto.getBillData().get("customerNumber");
+		}
+		else if(billPaymentRequestDto.getBillType().equals(BillType.MOBILE_RECHARGE)){
+			description+= " -> mobileNumber: "+billPaymentRequestDto.getBillData().get("mobileNumber");
+			description+= " operator: "+billPaymentRequestDto.getBillData().get("operator");
+		}
+//		System.out.println(description);
 		Transaction trans = new Transaction(
 		    "DEBIT",
 		    "PENDING",
@@ -93,10 +106,13 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 		try {
 			billPayment = convertBillPaymentRequestDtoToBillPayment(billPaymentRequestDto);
 			billPayment.setWallet(wallet);
+			billPayment.setPaymentDate(LocalDateTime.now());
 //			System.out.println(billPayment);
 			walletService.debit(wallet.getWalletId(), BigDecimal.valueOf(billPaymentRequestDto.getAmount()));
 			
 			BillPayment b = billPaymentDao.saveBillPayment(billPayment);
+			System.out.println(b.getBillId());
+			System.out.println(b.getPaymentDate());
 			transaction.setTransactionStatus("SUCCESS");
             transactionService.updateTransaction(transaction);
             
@@ -211,5 +227,20 @@ public class BillPaymentService implements BillPaymentServiceInterface {
 	@Override
 	public List<BillPayment> searchBillPayments(String query) {
 		return billPaymentDao.searchBillPayments(query);
+	}
+
+	@Override
+	public List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillTypeCustomer(LocalDateTime start,
+			LocalDateTime end, BillType billtype) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+		Wallet wallet = walletService.getWalletByCustomerId(customerDto.getCustId());
+		return billPaymentDao.getAllBillPaymentsBetweenPaymentDateAndBillTypeAndWalletId(start,end,billtype,wallet.getWalletId());
+	}
+
+	@Override
+	public List<BillPayment> getAllBillPaymentsBetweenPaymentDateAndBillType(LocalDateTime start, LocalDateTime end,
+			BillType billtype) {
+		return billPaymentDao.getAllBillPaymentsBetweenPaymentDateAndBillType(start,end,billtype);
 	}
 }

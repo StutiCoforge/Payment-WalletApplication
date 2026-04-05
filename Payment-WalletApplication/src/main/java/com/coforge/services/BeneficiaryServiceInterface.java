@@ -10,7 +10,7 @@ public interface BeneficiaryServiceInterface {
 
 public List<Beneficiary> getAllBeneficiary();
 
-public Beneficiary addBeneficiary(Beneficiary beneficiary);
+public String addBeneficiary(Beneficiary beneficiary);
 		
 public Beneficiary getBeneficiaryById(long id);
 	

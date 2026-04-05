@@ -1,0 +1,24 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Wallet, WalletBalance } from '../models/wallet.model';
+import { AuthService } from './auth.service';
+
+@Injectable({ providedIn: 'root' })
+export class WalletService {
+  private base = 'http://localhost:8080';
+
+  constructor(private http: HttpClient, private auth: AuthService) {}
+
+  getWallet(): Observable<Wallet> {
+    return this.http.get<Wallet>(`${this.base}/auth/wallets`, {
+      headers: this.auth.getAuthHeaders()
+    });
+  }
+
+  getBalance(walletId: number): Observable<WalletBalance> {
+    return this.http.get<WalletBalance>(`${this.base}/auth/wallets/${walletId}/balance`, {
+      headers: this.auth.getAuthHeaders()
+    });
+  }
+}

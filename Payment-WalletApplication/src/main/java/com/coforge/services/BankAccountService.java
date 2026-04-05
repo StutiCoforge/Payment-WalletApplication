@@ -57,9 +57,10 @@ public class BankAccountService implements BankAccountServiceInterface {
 		Customer customer = customerService.getById(customerDto.getCustId());		
 
 		bankAccount.setBalance(10000);
+		bankAccount.setIfscCode(bankAccount.getIfscCode().toUpperCase());
 		bankAccount.setCustomer(customer);
-		customerService.addBankAccount(customer.getCustId(), bankAccount);
-		
+//		customerService.addBankAccount(customer.getCustId(), bankAccount);
+//		System.out.println("added");
 		return bankAccountDao.saveBankAccount(bankAccount);
 	}
 

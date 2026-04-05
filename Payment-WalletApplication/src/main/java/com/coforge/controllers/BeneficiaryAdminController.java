@@ -2,6 +2,7 @@ package com.coforge.controllers;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import com.coforge.services.BeneficiaryAdminService;
 
 @RestController
 @RequestMapping("/admin/beneficiaries")
+@CrossOrigin
 public class BeneficiaryAdminController {
 
     @Autowired
@@ -37,8 +39,8 @@ public class BeneficiaryAdminController {
 
    
     @DeleteMapping("/{beneficiaryId}")
-    public ResponseEntity<String> deleteBeneficiary(@PathVariable long beneficiaryId) {
+    public ResponseEntity<Map<String,String>> deleteBeneficiary(@PathVariable long beneficiaryId) {
         String response = adminService.deleteBeneficiary(beneficiaryId);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(Map.of("message",response));
     }
 }

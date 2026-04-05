@@ -42,4 +42,12 @@ public interface TransactionServiceInterface {
 
 	List<TransactionDto> viewTransactionByMonth(int month, int year);
 
+	String deleteTransaction(Long txId);
+
+	List<TransactionDto> getBySubCategoryCustomer(TransactionSubCategory subCategory);
+
+	List<TransactionDto> getByCategoryCustomer(TransactionCategory category);
+
+	List<TransactionDto> viewTransactionByDateCustomer(LocalDate from, LocalDate to);
+
 }

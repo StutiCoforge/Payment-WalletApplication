@@ -1,12 +1,14 @@
 package com.coforge.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,7 @@ import com.coforge.services.BankAccountService;
 
 @RestController
 @RequestMapping("/admin/bankAccount")
+@CrossOrigin
 public class BankAccountAdminController {
 	@Autowired
 	BankAccountService bankAccountService;
@@ -46,13 +49,13 @@ public class BankAccountAdminController {
 	}
 
 	@DeleteMapping("/{bankAccountId}")
-	public ResponseEntity<String> deleteBankAccounts(@PathVariable("bankAccountId") long bankAccountId){
+	public ResponseEntity<Map<String,String>> deleteBankAccounts(@PathVariable("bankAccountId") long bankAccountId){
 		bankAccountService.deleteBankAccount(bankAccountId);
-		return new ResponseEntity<>("Bank Account Deleted",HttpStatus.OK);
+		return new ResponseEntity<>(Map.of("message","Bank Account Deleted"),HttpStatus.OK);
 	}
 	
 	@PostMapping("/transferToWallet/{bankAccountId}")
-    public ResponseEntity<String> topUpWallet(@Param("amount") double amount,@PathVariable("bankAccountId") long bankAccountId) {
+    public ResponseEntity<Map<String,String>> topUpWallet(@Param("amount") double amount,@PathVariable("bankAccountId") long bankAccountId) {
         boolean success = bankAccountService.transferToWallet(amount,bankAccountId);
         String response="";
         if(success) {
@@ -61,7 +64,7 @@ public class BankAccountAdminController {
         else {
         	response = "Failed to transfer "+amount + " Rs. to wallet";
         }
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        return new ResponseEntity<>(Map.of("message",response),HttpStatus.CREATED);
     }
 	
 	@GetMapping("/search")

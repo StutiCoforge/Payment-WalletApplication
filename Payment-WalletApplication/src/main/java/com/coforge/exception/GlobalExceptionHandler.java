@@ -12,7 +12,7 @@ import com.coforge.security.JwtAuthenticationFilter;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
 	@ExceptionHandler(BillPaymentNotFoundException.class)
 	public ResponseEntity<String> handleBillPaymentNotFoundException(BillPaymentNotFoundException e){

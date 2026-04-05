@@ -49,18 +49,22 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 				
 			return walletService.getWalletBeneficiaries(wallet.getWalletId());
 		}
+			public List<Beneficiary> getAllBeneficiaryByAdmin() {
+									
+				return beneficiaryRepository.findAll();
+			}
 
 		@Override
-		public Beneficiary addBeneficiary(Beneficiary beneficiary) {
+		public String addBeneficiary(Beneficiary beneficiary) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			CustomerJWTTokenDto customer = (CustomerJWTTokenDto) auth.getPrincipal();
 			Wallet wallet = walletService.getWalletByCustomerId(customer.getCustId());
-//			Beneficiary b = dao.saveBeneficiary(beneficiary);
+Beneficiary b = dao.saveBeneficiary(beneficiary);
 //			System.out.println(wallet.getWalletId());
 //			System.out.println("okkk");
 			walletService.addBeneficiary(wallet.getWalletId(),beneficiary);
 			
-			return beneficiary;
+			return "beneficiary added successfully";
 		}
 		@Override
 		public Beneficiary updateBeneficiary(Beneficiary beneficiary) {
@@ -181,4 +185,5 @@ public class BeneficiaryService implements BeneficiaryServiceInterface{
 			// TODO Auto-generated method stub
 	        return dao.findByBeneficiaryName(beneficiaryName);
 
-		}}
+		}
+		}

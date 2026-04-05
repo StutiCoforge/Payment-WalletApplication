@@ -19,6 +19,8 @@ public interface BillPaymentRepository extends JpaRepository<BillPayment, Long> 
 	public List<BillPayment> findAllByBillTypeAndWalletWalletId(BillType billType, long walletId);
 	
 	public List<BillPayment> findAllByPaymentDateBetween(LocalDateTime start, LocalDateTime end);
+	public List<BillPayment> findAllByPaymentDateBetweenAndBillType(LocalDateTime start, LocalDateTime end,BillType billtype);
+	public List<BillPayment> findAllByPaymentDateBetweenAndBillTypeAndWalletWalletId(LocalDateTime start, LocalDateTime end,BillType billtype,long walletId);
 	public List<BillPayment> findAllByPaymentDateBetweenAndWalletWalletId(LocalDateTime start, LocalDateTime end, long walletId);
 	
 	@Query("SELECT b FROM BillPayment b JOIN b.wallet w JOIN w.customer c WHERE c.custName LIKE %:query% OR c.mobileNumber LIKE %:query% OR c.email LIKE %:query%")
