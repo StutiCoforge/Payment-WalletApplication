@@ -1,5 +1,7 @@
 package com.coforge.exception;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,61 +17,63 @@ public class GlobalExceptionHandler {
 	private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 	
 	@ExceptionHandler(BillPaymentNotFoundException.class)
-	public ResponseEntity<String> handleBillPaymentNotFoundException(BillPaymentNotFoundException e){
+	public ResponseEntity<Map<String,String>> handleBillPaymentNotFoundException(BillPaymentNotFoundException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(InvalidBillPaymentDataException.class)
-	public ResponseEntity<String> handleInvalidBillPaymentDataException(InvalidBillPaymentDataException e){
+	public ResponseEntity<Map<String,String>> handleInvalidBillPaymentDataException(InvalidBillPaymentDataException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(BankAccountNotFoundException.class)
-	public ResponseEntity<String> handleBankAccountNotFoundException(BankAccountNotFoundException e){
+	public ResponseEntity<Map<String,String>> handleBankAccountNotFoundException(BankAccountNotFoundException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(BankAccountInsufficientBalanceException.class)
-	public ResponseEntity<String> handleBankAccountInsufficientBalanceException(BankAccountInsufficientBalanceException e){
+	public ResponseEntity<Map<String,String>> handleBankAccountInsufficientBalanceException(BankAccountInsufficientBalanceException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		System.out.println("In the exception");
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(CustomerAlreadyExistsException.class)
-	public ResponseEntity<String> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException e){
+	public ResponseEntity<Map<String,String>> handleCustomerAlreadyExistsException(CustomerAlreadyExistsException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(CustomerNotFoundException.class)
-	public ResponseEntity<String> handleCustomerNotFoundException(CustomerNotFoundException e){
+	public ResponseEntity<Map<String,String>> handleCustomerNotFoundException(CustomerNotFoundException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(InsufficientBalanceException.class)
-	public ResponseEntity<String> handleInsufficientBalanceException(InsufficientBalanceException e){
+	public ResponseEntity<Map<String,String>> handleInsufficientBalanceException(InsufficientBalanceException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(WalletNotFoundException.class)
-	public ResponseEntity<String> handleWalletNotFoundException(WalletNotFoundException e){
+	public ResponseEntity<Map<String,String>> handleWalletNotFoundException(WalletNotFoundException e){
 		logger.error("Error: {}",e.getMessage());
-		return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler(BeneficiaryException.class)
-	public ResponseEntity<String> handleBeneficiaryNotFoundException(BeneficiaryException e){
-		
-	 return new ResponseEntity<>(e.getMessage() ,HttpStatus.NOT_FOUND);
+	public ResponseEntity<Map<String,String>> handleBeneficiaryNotFoundException(BeneficiaryException e){
+		logger.error("Error: {}",e.getMessage());
+	 return new ResponseEntity<>(Map.of("message",e.getMessage()) ,HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(TransactionNotFoundException.class)
-    public ResponseEntity<String> handleTransactionNotFound(TransactionNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
+    public ResponseEntity<Map<String,String>> handleTransactionNotFound(TransactionNotFoundException e) {
+		logger.error("Error: {}",e.getMessage());
+		return new ResponseEntity<>(Map.of("message",e.getMessage()) ,HttpStatus.NOT_FOUND);
+	}
 }

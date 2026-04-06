@@ -31,7 +31,7 @@ export class AdminLoginComponent {
     this.loading = true;
     this.error = '';
     // Admin logs in via the same endpoint — the backend validates the ADMIN role
-    this.auth.login({ email: this.email, pwd: this.pwd }).subscribe({
+    this.auth.loginAdmin({ email: this.email, pwd: this.pwd }).subscribe({
       next: (res) => {
         this.adminAuth.saveToken(res.token);
         this.router.navigate(['/admin']);

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminTransactionService } from '../../../services/admin-transaction.service';
-import { Transaction, TransactionCategory } from '../../../models/transaction.model';
+import { Transaction, TransactionCategory, TransactionSubCategory } from '../../../models/transaction.model';
 
 @Component({
   selector: 'app-admin-transactions',
@@ -17,14 +17,16 @@ export class AdminTransactionsComponent implements OnInit {
   error = '';
 
   filterCategory = '';
+  filterSubCategory = '';
   filterFrom = '';
   filterTo = '';
   filterMonth = '';
   filterYear = '';
 
   categories: TransactionCategory[] = ['BENEFICIARY_TRANSFER', 'BILL_PAYMENT', 'WALLET_TOP_UP'];
+  subcategories: TransactionSubCategory[] = ['ELECTRICITY', 'MOBILE_RECHARGE', 'GAS'];
 
-  constructor(private svc: AdminTransactionService) {}
+  constructor(private svc: AdminTransactionService) { }
 
   ngOnInit() { this.load(); }
 
@@ -38,9 +40,25 @@ export class AdminTransactionsComponent implements OnInit {
 
   applyFilter() {
     this.loading = true;
-    if (this.filterCategory) {
+    if (this.filterCategory && this.filterFrom && this.filterTo) {
+      this.svc.getByCategoryAndDate(this.filterCategory as TransactionCategory, this.filterFrom, this.filterTo).subscribe({
+        next: (data) => { this.filtered = data; this.loading = false;},
+        error: () => { this.error = 'Filter failed.'; this.loading = false;}
+      });
+    } else if (this.filterSubCategory && this.filterFrom && this.filterTo) {
+      this.svc.getBySubCategoryAndDate(this.filterSubCategory as TransactionSubCategory, this.filterFrom, this.filterTo).subscribe({
+        next: (data) => { this.filtered = data; this.loading = false;},
+        error: () => { this.error = 'Filter failed.'; this.loading = false;}
+      });
+    }
+    else if (this.filterCategory) {
       this.svc.getByCategory(this.filterCategory as TransactionCategory).subscribe({
         next: (data) => { this.filtered = data; this.loading = false; },
+        error: () => { this.error = 'Filter failed.'; this.loading = false; }
+      });
+    } else if (this.filterSubCategory as TransactionSubCategory) {
+      this.svc.getBySubCategory(this.filterSubCategory as TransactionSubCategory).subscribe({
+        next: (data) => { this.filtered = data;this.loading = false; },
         error: () => { this.error = 'Filter failed.'; this.loading = false; }
       });
     } else if (this.filterFrom && this.filterTo) {

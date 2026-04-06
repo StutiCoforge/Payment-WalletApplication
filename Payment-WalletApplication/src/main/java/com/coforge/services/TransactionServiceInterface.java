@@ -37,6 +37,9 @@ public interface TransactionServiceInterface {
     // View Customer's Transactions by Category
     public List<TransactionDto> getCustomerTransactionsByCategory(Long custId, TransactionCategory category);
 
+    public List<TransactionDto> getCustomerTransactionsByCategoryAndDateCustomer(TransactionCategory category,LocalDate from, LocalDate to);
+    public List<TransactionDto> getCustomerTransactionsBySubCategoryAndDateCustomer(TransactionSubCategory category,LocalDate from, LocalDate to);
+
     //View Customer's Transactions by SubCategory
     public List<TransactionDto> getCustomerTransactionsBySubCategory(Long custId, TransactionSubCategory subCategory);
 

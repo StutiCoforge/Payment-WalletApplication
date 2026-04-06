@@ -11,6 +11,8 @@ import com.coforge.entities.Customer;
 public interface CustomerRepository extends JpaRepository<Customer, Long>
 {
 	Optional<Customer> findByEmailAndPwd(String email, String pwd);
+	
+	List<Customer> findByRole(String role);
 
 	List<Customer> findByEmail(String email);
 	

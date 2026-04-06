@@ -15,6 +15,12 @@ export class TransactionService {
       headers: this.auth.getAuthHeaders()
     });
   }
+  
+  getOne(id:string): Observable<Transaction> {
+    return this.http.get<Transaction>(`${this.base}/auth/transactions/${id}`, {
+      headers: this.auth.getAuthHeaders()
+    });
+  }
 
   getByDateRange(from: string, to: string): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/auth/transactions/dates?from=${from}&to=${to}`, {
@@ -27,9 +33,20 @@ export class TransactionService {
       headers: this.auth.getAuthHeaders()
     });
   }
+  getByCategoryAndDate(category: TransactionCategory,from: string, to: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.base}/auth/transactions/category/${category}/dates?from=${from}&to=${to}`, {
+      headers: this.auth.getAuthHeaders()
+    });
+  }
   
   getBySubCategory(subcategory: TransactionSubCategory): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/auth/transactions/subcategory/${subcategory}`, {
+      headers: this.auth.getAuthHeaders()
+    });
+  }
+
+  getBySubCategoryAndDate(subcategory: TransactionSubCategory,from: string, to: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.base}/auth/transactions/subcategory/${subcategory}/dates?from=${from}&to=${to}`, {
       headers: this.auth.getAuthHeaders()
     });
   }

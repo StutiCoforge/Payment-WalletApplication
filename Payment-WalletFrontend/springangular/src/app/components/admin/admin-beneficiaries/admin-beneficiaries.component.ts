@@ -35,7 +35,7 @@ export class AdminBeneficiariesComponent implements OnInit {
     this.loading = true;
     this.svc.getByCustomer(id).subscribe({
       next: (data) => { this.beneficiaries = data; this.loading = false; },
-      error: () => { this.error = 'Filter failed.'; this.loading = false; }
+      error: (err) => { this.error = 'Filter failed. '+err.error.message;console.log(err); this.loading = false; }
     });
   }
 

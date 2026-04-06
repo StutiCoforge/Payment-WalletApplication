@@ -20,6 +20,9 @@ export class AuthService {
   login(data: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.base}/customers/login`, data);
   }
+  loginAdmin(data: LoginRequest): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.base}/customers/admin/login`, data);
+  }
 
   saveToken(token: string): void {
     localStorage.setItem('token', token);

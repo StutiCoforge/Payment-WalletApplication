@@ -13,7 +13,7 @@ public class CustomerDao implements CustomerDaoInterface
 	@Override
 	public List<Customer> getAllCustomer()
 	{
-		return customerRepository.findAll();
+		return customerRepository.findByRole("USER");
 	}
 	@Override
 	public Customer saveCustomer(Customer customer)

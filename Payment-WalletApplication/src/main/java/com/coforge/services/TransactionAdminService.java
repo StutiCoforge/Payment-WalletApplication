@@ -11,6 +11,7 @@ import com.coforge.dtos.TransactionDto;
 import com.coforge.entities.Transaction;
 import com.coforge.entities.TransactionCategory;
 import com.coforge.entities.TransactionSubCategory;
+import com.coforge.repositories.TransactionRepository;
 
 @Service
 public class TransactionAdminService {
@@ -19,6 +20,9 @@ public class TransactionAdminService {
 
 	    @Autowired
 	    private TransactionDao transactionDao;
+	    
+	    @Autowired
+	    private TransactionRepository transactionRepository;
 
 	    /* ---------------- DTO MAPPER ---------------- */
 
@@ -68,5 +72,21 @@ public class TransactionAdminService {
 	    public List<TransactionDto> viewTransactionByMonth(int month, int year) {
 	        return toDtoList(transactionDao.viewTransactionByMonth(month, year));
 	    }
+	    
+		 public List<TransactionDto> getCustomerTransactionsByCategoryAndDate(TransactionCategory category, LocalDate from,
+				LocalDate to) {
+			return transactionRepository.findByCategoryAndTransactionDateBetween(category, from, to).stream()
+	    	        .map(this::toDto)
+	    	        .toList();
+		 }
+
+
+		 public List<TransactionDto> getCustomerTransactionsBySubCategoryAndDate(TransactionSubCategory category,
+				LocalDate from, LocalDate to) {
+			// TODO Auto-generated method stub
+			return transactionRepository.findBySubCategoryAndTransactionDateBetween(category, from, to).stream()
+	    	        .map(this::toDto)
+	    	        .toList();
+		 }
 	}
 

@@ -18,6 +18,10 @@ export class BillPaymentComponent implements OnInit {
   successMsg = '';
   showForm = false;
 
+  singleBillPayment!: BillPaymentResponse;
+  showSingleBillPayment=false;
+  singleBillPaymentBillData!:any;
+
   billTypes: BillType[] = ['ELECTRICITY', 'MOBILE_RECHARGE', 'GAS_BOOKING'];
   mobileRechargeOperators: MobileRechargeOperators[] = ['JIO','VI', 'AIRTEL', 'BSNL'];
 
@@ -142,4 +146,19 @@ export class BillPaymentComponent implements OnInit {
     this.filterTo = '';
     this.filtered = this.bills;
   }
+
+  fetchSingleBillPayment(billPayment:BillPaymentResponse){
+    this.showSingleBillPayment=true;
+    this.singleBillPayment=billPayment;
+    this.singleBillPaymentBillData=billPayment.billData;
+  }
+  
+  closeSingleBillPayment(){
+    this.showSingleBillPayment=false;
+  }
+
+  getColumns(data:any){
+    return Object.keys(data);
+  }
+
 }

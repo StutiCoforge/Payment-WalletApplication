@@ -12,6 +12,8 @@ import { Transaction, TransactionCategory, TransactionSubCategory } from '../../
 })
 export class TransactionComponent implements OnInit {
   transactions: Transaction[] = [];
+  singleTransaction!: Transaction;
+  showSingleTransaction=false;
   filtered: Transaction[] = [];
   loading = true;
   error = '';
@@ -42,7 +44,17 @@ export class TransactionComponent implements OnInit {
   }
 
   applyFilter() {
-    if (this.filterCategory) {
+    if (this.filterCategory && this.filterFrom && this.filterTo) {
+      this.txService.getByCategoryAndDate(this.filterCategory as TransactionCategory,this.filterFrom, this.filterTo).subscribe({
+        next: (data) => { this.filtered = data; },
+        error: () => { this.error = 'Filter failed.'; }
+      });
+    }else if (this.filterSubCategory && this.filterFrom && this.filterTo) {
+      this.txService.getBySubCategoryAndDate(this.filterSubCategory as TransactionSubCategory,this.filterFrom, this.filterTo).subscribe({
+        next: (data) => { this.filtered = data; },
+        error: () => { this.error = 'Filter failed.'; }
+      });
+    } else if (this.filterCategory) {
       this.txService.getByCategory(this.filterCategory as TransactionCategory).subscribe({
         next: (data) => { this.filtered = data; },
         error: () => { this.error = 'Filter failed.'; }
@@ -73,7 +85,7 @@ export class TransactionComponent implements OnInit {
   deleteTransaction(id: number) {
     if (!confirm('Delete this transaction?')) return;
     this.txService.delete(id).subscribe({
-      next: (msg) => { this.successMsg = msg; this.load(); },
+      next: (msg) => { this.successMsg = "Transaction Deleted"; this.load(); },
       error: () => { this.error = 'Failed to delete.'; }
     });
   }
@@ -82,5 +94,13 @@ export class TransactionComponent implements OnInit {
     if (type === 'DEBIT') return 'bg-red-500/15 text-red-400 border border-red-500/20 text-xs font-medium px-2.5 py-1 rounded-full';
     if (type === 'CREDIT') return 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 text-xs font-medium px-2.5 py-1 rounded-full';
     return 'bg-slate-700 text-slate-300 text-xs font-medium px-2.5 py-1 rounded-full';
+  }
+
+  fetchSingleTransaction(transaction:Transaction){
+    this.showSingleTransaction=true;
+    this.singleTransaction=transaction;
+  }
+  closeSingleTransaction(){
+    this.showSingleTransaction=false;
   }
 }

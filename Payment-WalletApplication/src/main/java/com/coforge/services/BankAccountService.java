@@ -105,9 +105,10 @@ public class BankAccountService implements BankAccountServiceInterface {
 
 		Transaction transaction = transactionService.addTransaction(trans);
 		try {
+			debitFromBankAccount(bankAccountId,amount);
+			
 			walletService.credit(wallet.getWalletId(), BigDecimal.valueOf(amount));
 			
-			debitFromBankAccount(bankAccountId,amount);
 			
 			transaction.setTransactionStatus("SUCCESS");
             transactionService.updateTransaction(transaction);
@@ -118,7 +119,8 @@ public class BankAccountService implements BankAccountServiceInterface {
 			transaction.setTransactionStatus("FAILED");
             transactionService.updateTransaction(transaction);
             System.out.println(e);
-			return false;
+//			return false;
+            throw e;
 		}
 	}
 

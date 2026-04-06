@@ -5,64 +5,146 @@
   </div>
 
   @if (loading) {
-    <div class="flex items-center justify-center h-64">
-      <div class="w-10 h-10 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
+  <div class="flex items-center justify-center h-64">
+    <div class="w-10 h-10 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
   } @else if (error) {
-    <div class="alert-error">{{ error }}</div>
+  <div class="alert-error">{{ error }}</div>
   } @else if (wallet) {
 
-    <!-- Wallet card -->
-    <div class="relative overflow-hidden rounded-3xl p-8 mb-6
+  <div class="flex w-full gap-4">
+    <div class="w-full">
+      <!-- Wallet card -->
+      <div
+        class="relative overflow-hidden rounded-3xl p-8 mb-6
                 bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 shadow-2xl shadow-indigo-900/50 max-w-lg">
-      <div class="absolute top-0 right-0 w-56 h-56 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-      <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-      <div class="relative">
-        <div class="flex items-center justify-between mb-6">
-          <div class="flex items-center gap-2">
-            <svg class="w-5 h-5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-            </svg>
-            <span class="text-indigo-200 text-sm font-medium">PayWallet</span>
+        <div class="absolute top-0 right-0 w-56 h-56 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        <div class="relative">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+              <span class="text-indigo-200 text-sm font-medium">PayWallet</span>
+            </div>
+            <span class="text-indigo-300 text-xs">ID: #{{ wallet.walletId }}</span>
           </div>
-          <span class="text-indigo-300 text-xs">ID: #{{ wallet.walletId }}</span>
+          <p class="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-2">Available Balance</p>
+          <p class="text-5xl font-bold text-white tracking-tight">₹{{ wallet.balance | number:'1.2' }}</p>
+          <button class="border border-white px-3 py-1 rounded mt-4 bg-white text-indigo-800"
+            (click)="showBankAccounts()">Top Up</button>
         </div>
-        <p class="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-2">Available Balance</p>
-        <p class="text-5xl font-bold text-white tracking-tight">₹{{ wallet.balance | number:'1.2-2' }}</p>
       </div>
-    </div>
 
-    <!-- Beneficiaries -->
-    <div class="glass-card rounded-2xl overflow-hidden max-w-lg">
-      <div class="px-6 py-4 border-b border-slate-800/60">
-        <h3 class="text-sm font-semibold text-white">Linked Beneficiaries</h3>
-      </div>
-      @if (wallet.beneficiary.length === 0) {
+
+      <!-- Beneficiaries -->
+      <div class="glass-card rounded-2xl overflow-hidden max-w-lg">
+        <div class="px-6 py-4 border-b border-slate-800/60">
+          <h3 class="text-sm font-semibold text-white">Linked Beneficiaries</h3>
+        </div>
+        @if (wallet.beneficiary.length === 0) {
         <div class="px-6 py-10 text-center">
           <div class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto mb-3">
             <svg class="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
           <p class="text-slate-500 text-sm">No beneficiaries linked yet</p>
         </div>
-      } @else {
+        } @else {
         <ul class="divide-y divide-slate-800/60">
           @for (b of wallet.beneficiary; track b.beneficiaryId) {
-            <li class="flex items-center gap-4 px-6 py-4">
-              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
-                {{ b.beneficiaryName.charAt(0) }}
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-white truncate">{{ b.beneficiaryName }}</p>
-                <p class="text-xs text-slate-400">{{ b.mobileNumber }}</p>
-              </div>
-            </li>
+          <li class="flex items-center gap-4 px-6 py-4">
+            <div
+              class="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+              {{ b.beneficiaryName.charAt(0) }}
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-white truncate">{{ b.beneficiaryName }}</p>
+              <p class="text-xs text-slate-400">{{ b.mobileNumber }}</p>
+            </div>
+          </li>
           }
         </ul>
-      }
+        }
+      </div>
     </div>
+
+    <div class="w-full">
+      <div *ngIf="showTopUpAccount">
+        @if (bankError) {
+        <div class="alert-error">{{ bankError }}</div>
+        }
+        @if (bankloading) {
+        <div class="flex items-center justify-center h-48">
+          <div class="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+        } @else if (accounts.length === 0) {
+        <div class="glass-card rounded-2xl p-12 text-center">
+          <div class="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+            </svg>
+          </div>
+          <p class="text-slate-400">No bank accounts linked yet</p>
+          <p class="text-slate-500 text-sm mt-1">Add your first bank account to get started</p>
+        </div>
+        } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          @for (acc of accounts; track acc.bankAccountId) {
+          <div class="glass-card rounded-2xl p-5 hover:border-indigo-500/30 transition-all group">
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center">
+                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                </svg>
+              </div>
+              <span class="text-xs text-slate-500">#{{ acc.bankAccountId }}</span>
+            </div>
+            <p class="font-semibold text-white mb-1">{{ acc.bankname }}</p>
+            <p class="text-sm text-slate-400 font-mono mb-0.5">{{ acc.accountNo }}</p>
+            <p class="text-xs text-slate-500 mb-4">IFSC: {{ acc.ifscCode }}</p>
+            <div class="flex items-center justify-between pt-3 border-t border-slate-800/60">
+              <!-- <div>
+              <p class="text-xs text-slate-500">Balance</p>
+              <p class="text-lg font-bold text-white">₹{{ acc.balance | number:'1.2' }}</p>
+            </div> -->
+              <div class="flex gap-2">
+                <button (click)="openTransfer(acc)" class="btn-accent">Select</button>
+              </div>
+            </div>
+          </div>
+          }
+
+        </div>
+        }
+
+        <!-- Transfer Modal -->
+        @if (transferModal) {
+        <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div class="glass-card rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+            <h3 class="text-lg font-semibold text-white mb-1">Transfer to Wallet</h3>
+            <p class="text-sm text-slate-400 mb-5">From {{ transferModal.bankname }}</p>
+            <div class="bg-slate-800/60 rounded-xl p-3 mb-5 text-sm text-slate-300 font-mono">
+              {{ transferModal.accountNo }}
+            </div>
+            <label class="label">Amount (₹)</label>
+            <input type="number" [(ngModel)]="transferAmount" min="1" placeholder="Enter amount"
+              class="input-dark mb-5" />
+            <div class="flex gap-3">
+              <button (click)="doTransfer()" class="btn-primary flex-1 text-center">Transfer</button>
+              <button (click)="transferModal = null" class="btn-ghost flex-1 text-center">Cancel</button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
   }
 </div>

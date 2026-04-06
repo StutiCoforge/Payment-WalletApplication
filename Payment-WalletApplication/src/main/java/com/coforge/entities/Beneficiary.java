@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,10 +25,11 @@ public class Beneficiary {
 	@Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	private long beneficiaryId;
-	 private String beneficiaryName;
+	@NotEmpty
+	private String beneficiaryName;
      
 
-	 @Pattern(regexp = "\\d{10}", message = "Phone number must be exactly 10 digits")
+	 @Pattern(regexp = "[6-9][0-9]{9}", message = "Phone number must be exactly 10 digits")
 	 private String mobileNumber;
 	 
 //	    @ManyToOne
