@@ -94,6 +94,7 @@ export class AdminTransactionsComponent implements OnInit {
     this.filterMonth = '';
     this.filterYear = '';
     this.filtered = this.transactions;
+    this.query="";
   }
 
   txTypeBadge(type: string): string {

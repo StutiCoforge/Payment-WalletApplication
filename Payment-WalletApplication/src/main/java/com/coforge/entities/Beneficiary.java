@@ -12,6 +12,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class Beneficiary {
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	private long beneficiaryId;
 	@NotEmpty
+	@Size(min = 2, message = "Name must be at least 2 characters")
 	private String beneficiaryName;
      
 

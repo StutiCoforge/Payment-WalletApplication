@@ -1,0 +1,66 @@
+2026-04-09 13:52:00 INFO  com.coforge.PaymentWalletApplication - Starting PaymentWalletApplication using Java 21.0.10 with PID 4064 (C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication\target\classes started by Gaurav.Kuriyal in C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication)
+2026-04-09 13:52:00 INFO  com.coforge.PaymentWalletApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-09 13:52:10 INFO  com.coforge.PaymentWalletApplication - Started PaymentWalletApplication in 10.676 seconds (process running for 11.807)
+2026-04-09 14:01:15 INFO  com.coforge.filters.LoggingFilter - Request /customers/admin/login POST 
+2026-04-09 14:01:15 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:01:15 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:01:15 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:01:15 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:01:15 INFO  com.coforge.filters.LoggingFilter - Request /admin/wallets GET 
+2026-04-09 14:01:15 INFO  com.coforge.filters.LoggingFilter - Request /admin/customers GET 
+2026-04-09 14:01:15 INFO  com.coforge.filters.LoggingFilter - Request /admin/bankAccount GET 
+2026-04-09 14:01:15 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/all GET 
+2026-04-09 14:01:37 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:01:37 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/all GET 
+2026-04-09 14:01:42 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:01:42 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/search GET ?query=Gaurav
+2026-04-09 14:02:19 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:02:19 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/all GET 
+2026-04-09 14:02:27 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:02:27 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/search GET ?query=Gaurav
+2026-04-09 14:02:32 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:02:32 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/search GET ?query=aurav
+2026-04-09 14:02:38 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:02:38 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/all GET 
+2026-04-09 14:02:54 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:02:54 INFO  com.coforge.filters.LoggingFilter - Request /admin/customers GET 
+2026-04-09 14:03:02 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:02 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/all GET 
+2026-04-09 14:03:04 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:04 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/search GET ?query=2k22.it.2213383@gmail.com
+2026-04-09 14:03:12 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:12 INFO  com.coforge.filters.LoggingFilter - Request /admin/billPayments/getAll GET 
+2026-04-09 14:03:18 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:18 INFO  com.coforge.filters.LoggingFilter - Request /admin/customers GET 
+2026-04-09 14:03:20 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:20 INFO  com.coforge.filters.LoggingFilter - Request /admin/customers GET 
+2026-04-09 14:03:20 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:20 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:20 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: ADMIN 8888888888 admin@mail.com
+2026-04-09 14:03:20 INFO  com.coforge.filters.LoggingFilter - Request /admin/wallets GET 
+2026-04-09 14:03:20 INFO  com.coforge.filters.LoggingFilter - Request /admin/bankAccount GET 
+2026-04-09 14:03:20 INFO  com.coforge.filters.LoggingFilter - Request /admin/transactions/all GET 
+2026-04-09 14:05:14 INFO  com.coforge.PaymentWalletApplication - Starting PaymentWalletApplication using Java 21.0.10 with PID 4064 (C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication\target\classes started by Gaurav.Kuriyal in C:\Users\Gaurav.Kuriyal\JavaTrainingProjects\PaymentApplicationProject\mergedMainBranch1\Payment-WalletApplication\Payment-WalletApplication)
+2026-04-09 14:05:14 INFO  com.coforge.PaymentWalletApplication - No active profile set, falling back to 1 default profile: "default"
+2026-04-09 14:05:20 INFO  com.coforge.PaymentWalletApplication - Started PaymentWalletApplication in 5.572 seconds (process running for 800.903)
+2026-04-09 14:06:51 INFO  com.coforge.filters.LoggingFilter - Request /customers/login POST 
+2026-04-09 14:06:51 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:06:51 INFO  com.coforge.filters.LoggingFilter - Request /auth/customers/getDetails GET 
+2026-04-09 14:07:37 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:07:37 INFO  com.coforge.filters.LoggingFilter - Request /auth/beneficiary GET 
+2026-04-09 14:09:40 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:09:40 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/getAll GET 
+2026-04-09 14:10:11 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:10:11 INFO  com.coforge.filters.LoggingFilter - Request /auth/bankAccount GET 
+2026-04-09 14:13:14 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:13:14 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/getAll GET 
+2026-04-09 14:31:52 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:31:52 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/getAll GET 
+2026-04-09 14:33:57 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:33:57 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/create POST 
+2026-04-09 14:33:58 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:33:58 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/getAll GET 
+2026-04-09 14:35:38 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:35:38 INFO  com.coforge.filters.LoggingFilter - Request /auth/billPayments/getAll GET 
+2026-04-09 14:37:09 INFO  com.coforge.security.JwtAuthenticationFilter - Authorised User: Gaurav 8876543234 gaurav3@mail.com
+2026-04-09 14:37:09 INFO  com.coforge.filters.LoggingFilter - Request /auth/transactions/all GET 
