@@ -34,3 +34,21 @@ export interface OtpResponse {
   otp: string;
   message: string;
 }
+
+export interface EmailOtpRequest {
+  email: string;
+  otpToken: string;
+  otp: string;
+}
+
+export interface ForgetPasswordRequest {
+  email: string;
+  otpToken: string;
+  otp: string;
+  newPwd:string;
+}
+
+export interface PasswordResetRequest {
+  pwd: string;
+  newPwd: string;
+}

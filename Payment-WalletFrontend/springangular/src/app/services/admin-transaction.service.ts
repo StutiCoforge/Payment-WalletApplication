@@ -8,7 +8,7 @@ import { AdminAuthService } from './admin-auth.service';
 export class AdminTransactionService {
   private base = 'http://localhost:8080';
 
-  constructor(private http: HttpClient, private adminAuth: AdminAuthService) {}
+  constructor(private http: HttpClient, private adminAuth: AdminAuthService) { }
 
   getAll(): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/admin/transactions/all`, {
@@ -28,19 +28,19 @@ export class AdminTransactionService {
     });
   }
 
-  getByCategoryAndDate(category: TransactionCategory,from: string, to: string): Observable<Transaction[]> {
+  getByCategoryAndDate(category: TransactionCategory, from: string, to: string): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/admin/transactions/category/${category}/dates?from=${from}&to=${to}`, {
       headers: this.adminAuth.getAuthHeaders()
     });
   }
-  
+
   getBySubCategory(category: TransactionSubCategory): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/admin/transactions/subcategory/${category}`, {
       headers: this.adminAuth.getAuthHeaders()
     });
   }
 
-  getBySubCategoryAndDate(subcategory: TransactionSubCategory,from: string, to: string): Observable<Transaction[]> {
+  getBySubCategoryAndDate(subcategory: TransactionSubCategory, from: string, to: string): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/admin/transactions/subcategory/${subcategory}/dates?from=${from}&to=${to}`, {
       headers: this.adminAuth.getAuthHeaders()
     });
@@ -48,6 +48,12 @@ export class AdminTransactionService {
 
   getByMonth(month: number, year: number): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.base}/admin/transactions/month?month=${month}&year=${year}`, {
+      headers: this.adminAuth.getAuthHeaders()
+    });
+  }
+
+  search(query: string): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.base}/admin/transactions/search?query=${query}`, {
       headers: this.adminAuth.getAuthHeaders()
     });
   }

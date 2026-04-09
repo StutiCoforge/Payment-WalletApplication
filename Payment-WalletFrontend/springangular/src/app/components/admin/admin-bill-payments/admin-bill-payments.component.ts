@@ -20,6 +20,7 @@ export class AdminBillPaymentsComponent implements OnInit {
   filterStart = '';
   filterEnd = '';
   billTypes: BillType[] = ['ELECTRICITY', 'MOBILE_RECHARGE', 'GAS_BOOKING'];
+  query="";
 
   constructor(private svc: AdminBillPaymentService) {}
 
@@ -50,10 +51,20 @@ export class AdminBillPaymentsComponent implements OnInit {
     }
   }
 
+  search(){
+    this.loading=true;
+    this.error="";
+    this.svc.search(this.query).subscribe({
+      next: (data) => { this.bills = data; this.loading = false; },
+      error: () => { this.error = 'Failed to load bills.'; this.loading = false; }
+    })
+  }
+
   clearFilter() {
     this.filterType = '';
     this.filterStart = '';
     this.filterEnd = '';
+    this.query="";
     this.load();
   }
 

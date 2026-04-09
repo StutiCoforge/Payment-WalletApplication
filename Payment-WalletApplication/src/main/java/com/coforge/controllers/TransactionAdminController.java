@@ -100,11 +100,17 @@ public class TransactionAdminController {
 //        );
 //    }
 
-@GetMapping("/month")
+    @GetMapping("/month")
     public ResponseEntity<List<TransactionDto>> getByMonth(
             @RequestParam int month,
             @RequestParam int year
     ) {
         return ResponseEntity.ok(transactionService.viewTransactionByMonth(month, year));
     }
+
+	@GetMapping("/search")
+	public ResponseEntity<List<TransactionDto>> searchTransactions(@RequestParam("query") String query) {
+	    return ResponseEntity.ok(transactionService.searchTransactions(query));
+	}
 }
+

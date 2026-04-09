@@ -11,10 +11,16 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  email = '';
-  pwd = '';
+  email:string = '';
+  pwd:string = "";
   error = '';
   loading = false;
+
+  showForgetPasswordForm=false;
+  otpSent=false;
+  otpLoading = false;
+  otp="";
+  newPwd= "";
 
   constructor(private auth: AuthService, private router: Router) {}
 
@@ -36,4 +42,48 @@ export class LoginComponent {
       }
     });
   }
+
+  setShowForgetPasswordForm(){
+    this.showForgetPasswordForm=!this.showForgetPasswordForm;
+  }
+
+  sendOtp() {
+    this.otpLoading = true;
+    this.error = '';
+    this.auth.sendotp({ email: this.email }).subscribe((data) => {
+      this.otpSent = true;
+      localStorage.setItem('otp', data.otp);
+      this.otpLoading = false;
+    })
+  }
+
+  forgetPassword(){
+    if (!this.otp || this.otp?.length < 6) {
+      this.error = 'Please enter valid otp.';
+      return;
+    }
+
+    const otpToken = localStorage.getItem("otp");
+
+    if(!otpToken) {
+      this.error = 'Something went wrong';
+      return;
+    }
+    this.loading=true;
+    this.auth.forgetPassword({ email: this.email, otpToken: otpToken, otp: this.otp, newPwd: this.newPwd }).subscribe({
+      next: (res) => {
+        localStorage.removeItem("otp");
+        this.loading = false;
+        this.error = '';
+        this.auth.saveToken(res.token);
+        this.router.navigate(['/dashboard']);
+      },
+      error: () => {
+        this.loading = false;
+        this.error = 'Invalid OTP';
+      }
+    })
+  }
+
+
 }

@@ -14,10 +14,10 @@ import com.coforge.dtos.CustomerResponseDto;
 import com.coforge.dtos.WalletDto;
 import com.coforge.entities.BankAccount;
 import com.coforge.entities.Customer;
-import com.coforge.entities.Transaction;
 import com.coforge.entities.Wallet;
 import com.coforge.exception.CustomerAlreadyExistsException;
 import com.coforge.exception.CustomerNotFoundException;
+import com.coforge.exception.InvalidPasswordException;
 import com.coforge.repositories.TransactionRepository;
 
 import jakarta.transaction.Transactional;
@@ -35,11 +35,10 @@ public class CustomerService implements CustomerServiceInterface
 	private WalletServiceImpl walletService;
 	
 	@Override
-	public List<CustomerResponseDto> getAllCustomer()
-	{
+	public List<CustomerResponseDto> getAllCustomer(){
 		List<CustomerResponseDto> customers =  customerDao.getAllCustomer().stream().map(
 				(c)->{
-					Wallet wallet = walletService.getWalletByCustomerId(c.getCustId());
+//					Wallet wallet = walletService.getWalletByCustomerId(c.getCustId());
 //					WalletDto w = new WalletDto(wallet.getWalletId(),wallet.getBalance(),wallet.getBeneficiary());
 					return new CustomerResponseDto(c.getCustId(),c.getCustName(),c.getMobileNumber(),c.getEmail());	
 				}).collect(Collectors.toList());
@@ -93,8 +92,8 @@ public class CustomerService implements CustomerServiceInterface
 		Customer customer1 = customerDao.getById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer Not Found" + customerId));
 		customer1.setCustName(customer.getCustName());
 		customer1.setMobileNumber(customer.getMobileNumber());
-		customer1.setPwd(customer.getPwd());
-		Customer updatedCustomer =customerDao.updateCustomer(customer1, customerId);
+//		customer1.setPwd(customer.getPwd());
+		Customer updatedCustomer =customerDao.updateCustomer(customer1);
 		
 		Wallet wallet = walletService.getWalletByCustomerId(updatedCustomer.getCustId());
 		WalletDto w = new WalletDto(wallet.getWalletId(),wallet.getBalance(),wallet.getBeneficiary());
@@ -107,7 +106,7 @@ public class CustomerService implements CustomerServiceInterface
 		Customer customer = customerDao.getById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer Not Found" + customerId));
 		customer.addBankAccount(bankAccount);
 //		System.out.println(customer.getBankAccounts());
-		return customerDao.updateCustomer(customer, customerId);
+		return customerDao.updateCustomer(customer);
 	}
 
 	@Override
@@ -125,10 +124,47 @@ public class CustomerService implements CustomerServiceInterface
 	{	
 		return customerDao.findByEmailAndPwd(email, pwd).orElseThrow(() -> new CustomerNotFoundException("Invalid Email or Password"));
 	}
+	
+//	@Override
 
 	@Override
 	public List<Customer> findByEmail(String email) {
 		return customerDao.findByEmail(email);
+	}
+
+	@Override
+	public Customer findSingleCustomerByEmail(String email) {
+		List<Customer> customers = customerDao.findByEmail(email);
+		if(customers.size()!=1) {
+			throw new CustomerNotFoundException("No Customer Found");
+		}
+		return customers.get(0);
+	}
+
+	@Override
+	public Customer updateCustomerPasswordByEmail(String email,String newPwd) {
+		List<Customer> customers = customerDao.findByEmail(email);
+		if(customers.size()!=1) {
+			throw new CustomerNotFoundException("No Customer Found");
+		}
+		Customer customer = customers.get(0);
+		customer.setPwd(newPwd);
+		
+		return customerDao.updateCustomer(customer);
+	}
+	
+	@Override
+	public Customer updateCustomerPassword(String pwd,String newPwd) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
+		
+		Customer customer = customerDao.getById(customerDto.getCustId()).orElseThrow(() -> new CustomerNotFoundException("Customer Not Found" + customerDto.getCustId()));
+		if(customer.getPwd().equals(pwd)) {
+			customer.setPwd(newPwd);
+			customerDao.updateCustomer(customer);
+			return customer;
+		}
+		else throw new InvalidPasswordException("Incorrect Password");
 	}
 
 	@Override

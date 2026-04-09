@@ -22,6 +22,7 @@ export class AdminTransactionsComponent implements OnInit {
   filterTo = '';
   filterMonth = '';
   filterYear = '';
+  query="";
 
   categories: TransactionCategory[] = ['BENEFICIARY_TRANSFER', 'BILL_PAYMENT', 'WALLET_TOP_UP'];
   subcategories: TransactionSubCategory[] = ['ELECTRICITY', 'MOBILE_RECHARGE', 'GAS'];
@@ -75,6 +76,15 @@ export class AdminTransactionsComponent implements OnInit {
       this.filtered = this.transactions;
       this.loading = false;
     }
+  }
+
+  search(){
+    this.loading=true;
+    this.error="";
+    this.svc.search(this.query).subscribe({
+      next: (data) => { this.filtered = data; this.loading = false;},
+        error: () => { this.error = 'Search failed.';this.filtered = this.transactions; this.loading = false;}
+    })
   }
 
   clearFilter() {

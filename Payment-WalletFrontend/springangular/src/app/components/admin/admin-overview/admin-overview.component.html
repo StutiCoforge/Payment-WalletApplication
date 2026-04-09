@@ -31,7 +31,7 @@
         <p class="text-sm text-slate-400 mt-1">Total Customers</p>
       </a>
 
-      <a routerLink="/admin/wallets" class="glass-card rounded-2xl p-5 hover:border-indigo-500/30 transition-all group">
+      <!-- <a routerLink="/admin/wallets" class="glass-card rounded-2xl p-5 hover:border-indigo-500/30 transition-all group">
         <div class="flex items-center justify-between mb-4">
           <div class="w-10 h-10 rounded-xl bg-indigo-500/15 flex items-center justify-center group-hover:bg-indigo-500/25 transition">
             <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,9 +45,9 @@
         </div>
         <p class="text-3xl font-bold text-white">{{ stats.wallets }}</p>
         <p class="text-sm text-slate-400 mt-1">Total Wallets</p>
-      </a>
+      </a> -->
 
-      <a routerLink="/admin/bank-accounts" class="glass-card rounded-2xl p-5 hover:border-blue-500/30 transition-all group">
+      <!-- <a routerLink="/admin/bank-accounts" class="glass-card rounded-2xl p-5 hover:border-blue-500/30 transition-all group">
         <div class="flex items-center justify-between mb-4">
           <div class="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center group-hover:bg-blue-500/25 transition">
             <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,7 +61,7 @@
         </div>
         <p class="text-3xl font-bold text-white">{{ stats.bankAccounts }}</p>
         <p class="text-sm text-slate-400 mt-1">Bank Accounts</p>
-      </a>
+      </a> -->
 
       <a routerLink="/admin/transactions" class="glass-card rounded-2xl p-5 hover:border-emerald-500/30 transition-all group">
         <div class="flex items-center justify-between mb-4">
@@ -84,11 +84,16 @@
     <div class="glass-card rounded-2xl p-6">
       <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Manage</h3>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-        @for (item of [
+        <!-- @for (item of [
           {label:'Customers', route:'/admin/customers', color:'rose'},
           {label:'Wallets', route:'/admin/wallets', color:'indigo'},
           {label:'Bank Accounts', route:'/admin/bank-accounts', color:'blue'},
           {label:'Beneficiaries', route:'/admin/beneficiaries', color:'violet'},
+          {label:'Bill Payments', route:'/admin/bill-payments', color:'amber'},
+          {label:'Transactions', route:'/admin/transactions', color:'emerald'}
+        ]; track item.route) { -->
+        @for (item of [
+          {label:'Customers', route:'/admin/customers', color:'rose'},
           {label:'Bill Payments', route:'/admin/bill-payments', color:'amber'},
           {label:'Transactions', route:'/admin/transactions', color:'emerald'}
         ]; track item.route) {

@@ -1,3 +1,8 @@
+<h1 class="text-3xl font-extrabold text-transparent bg-clip-text
+           bg-gradient-to-r from-[#7b5bff] to-[#a678ff]
+           text-center mb-6 tracking-wide">
+  PayWallet
+</h1>
 <div class="min-h-screen flex items-center justify-center bg-slate-950 relative overflow-hidden py-8">
   <!-- Background blobs -->
   <div class="absolute top-[-10rem] right-[-10rem] w-[40rem] h-[40rem] bg-violet-600/20 rounded-full blur-3xl pointer-events-none"></div>
@@ -17,29 +22,45 @@
         <p class="text-slate-400 text-sm mt-1">Join PayWallet today</p>
       </div>
 
-      <form (ngSubmit)="onSubmit()" class="space-y-4">
+      <form #signUpForm=ngForm  (ngSubmit)="onSubmit()" class="space-y-4">
         <div>
           <label class="label">Full Name</label>
-          <input type="text" [(ngModel)]="custName" name="custName" placeholder="John Doe" class="input-dark" />
+          <input type="text" #fullName="ngModel" required="" pattern="[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]" [(ngModel)]="custName" name="custName" placeholder="John Doe" class="input-dark" />
+          <div *ngIf="fullName.invalid && fullName.touched">
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="fullName.errors?.['required']">Name is required</small>
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="fullName.errors?.['pattern']">Name should be valid</small>
+          </div>
         </div>
         <div>
           <label class="label">Mobile Number</label>
-          <input type="text" [(ngModel)]="mobileNumber" name="mobileNumber" placeholder="10-digit number" class="input-dark" />
+          <input type="number" #mobileNumberCtrl="ngModel" [(ngModel)]="mobileNumber" pattern="[6-9][0-9]{9}" name="mobileNumber" placeholder="10-digit number" class="input-dark" />
+          <div *ngIf="mobileNumberCtrl.invalid && mobileNumberCtrl.touched">
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="mobileNumberCtrl.errors?.['required']">Mobile Number is required</small>
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="mobileNumberCtrl.errors?.['pattern']">Mobile Number should be valid</small>
+          </div>
         </div>
         <div>
           <label class="label">Email address</label>
-          <input type="email" [(ngModel)]="email" name="email" placeholder="you@example.com" class="input-dark" />
+          <input type="email" #emailCtrl="ngModel" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" [(ngModel)]="email" name="email" placeholder="you@example.com" class="input-dark" />
+          <div *ngIf="emailCtrl.invalid && emailCtrl.touched">
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="emailCtrl.errors?.['required']">Email is required</small>
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="emailCtrl.errors?.['pattern']">Email should be valid</small>
+          </div>
         </div>
         <div>
           <label class="label">Password</label>
-          <input type="password" [(ngModel)]="pwd" name="pwd" placeholder="••••••••" class="input-dark" />
+          <input type="password" #pwdCtrl="ngModel" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}" [(ngModel)]="pwd" name="pwd" placeholder="••••••••" class="input-dark" />
+          <div *ngIf="pwdCtrl.invalid && pwdCtrl.touched">
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="pwdCtrl.errors?.['required']">Password is required</small>
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="pwdCtrl.errors?.['pattern']">Password should have atleast 1 uppercase, 1 lowercase, 1 digit and 1 special character</small>
+          </div>
         </div>
 
         @if (error) {
           <div class="alert-error">{{ error }}</div>
         }
 
-        <button type="submit" [disabled]="loading" class="btn-primary w-full text-center mt-2">
+        <button type="submit" [disabled]="signUpForm.invalid ||loading" class="btn-primary w-full text-center mt-2">
           {{ loading ? 'Creating account...' : 'Create Account' }}
         </button>
       </form>
@@ -62,18 +83,22 @@
         <h1 class="text-2xl font-bold text-white">Enter OTP</h1>
       </div>
 
-      <form (ngSubmit)="signup()" class="space-y-4">
+      <form #otpForm="ngForm" (ngSubmit)="signup()" class="space-y-4">
         <div>
-          <label class="label">Mobile Number</label>
-          <input type="text" [(ngModel)]="otp" name="otp" placeholder="000000" class="input-dark" />
+          <label class="label">OTP</label>
+          <input type="number" #otpCtrl="ngModel" [(ngModel)]="otp" name="otp" required pattern="[0-9]{6}" placeholder="000000" class="input-dark" />
+          <div *ngIf="otpCtrl.invalid && otpCtrl.touched">
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="otpCtrl.errors?.['required']">OTP is required</small>
+            <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="otpCtrl.errors?.['pattern']">OTP should be of 6 characters</small>
+          </div>
         </div>
 
         @if (error) {
           <div class="alert-error">{{ error }}</div>
         }
 
-        <button type="submit" [disabled]="loading" class="btn-primary w-full text-center mt-2">
-          {{ loading ? 'Verifiying' : 'Submit' }}
+        <button type="submit" [disabled]="otpForm.invalid || loading" class="btn-primary w-full text-center mt-2">
+          {{ loading ? 'Verifyng' : 'Submit' }}
         </button>
       </form>
     </div>
