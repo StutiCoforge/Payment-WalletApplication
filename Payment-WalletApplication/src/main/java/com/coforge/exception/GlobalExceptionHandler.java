@@ -22,6 +22,18 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(InvalidOtpException.class)
+	public ResponseEntity<Map<String,String>> handleInvalidOtpException(InvalidOtpException e){
+		logger.error("Error: {}",e.getMessage());
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(InvalidPasswordException.class)
+	public ResponseEntity<Map<String,String>> handleInvalidPasswordException(InvalidPasswordException e){
+		logger.error("Error: {}",e.getMessage());
+		return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.NOT_FOUND);
+	}
+
 	@ExceptionHandler(InvalidBillPaymentDataException.class)
 	public ResponseEntity<Map<String,String>> handleInvalidBillPaymentDataException(InvalidBillPaymentDataException e){
 		logger.error("Error: {}",e.getMessage());

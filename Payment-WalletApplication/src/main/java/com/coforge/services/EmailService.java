@@ -20,6 +20,7 @@ public class EmailService {
 		message.setText("Your Otp is: "+otp);
 		
 		mailSender.send(message);
+		System.out.println("OTP Sent");
 		return otp;
 	}
 }

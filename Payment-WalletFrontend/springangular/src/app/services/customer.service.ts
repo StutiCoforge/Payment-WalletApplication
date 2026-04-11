@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Customer } from '../models/customer.model';
+import { Customer, PasswordResetRequest } from '../models/customer.model';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
@@ -12,6 +12,12 @@ export class CustomerService {
 
   getDetails(): Observable<Customer> {
     return this.http.get<Customer>(`${this.base}/auth/customers/getDetails`, {
+      headers: this.auth.getAuthHeaders()
+    });
+  }
+  
+  resetPassword(data: PasswordResetRequest): Observable<any> {
+    return this.http.post<any>(`${this.base}/auth/customers/reset-password`,data, {
       headers: this.auth.getAuthHeaders()
     });
   }

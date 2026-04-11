@@ -88,5 +88,11 @@ public class TransactionAdminService {
 	    	        .map(this::toDto)
 	    	        .toList();
 		 }
+		 
+		 public List<TransactionDto> searchTransactions(String query){
+			 return transactionRepository.searchTransactions(query).stream()
+		    	        .map(this::toDto)
+		    	        .toList();
+		 }
 	}
 

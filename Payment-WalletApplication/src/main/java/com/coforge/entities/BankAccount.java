@@ -22,11 +22,13 @@ public class BankAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long bankAccountId;
 	@NotEmpty
-	@Pattern(regexp="[0-9]+")
+	@Pattern(regexp="[1-9][0-9]{9,}")
 	private String accountNo;
 	@NotEmpty
+	@Pattern(regexp="[A-Z]{4}0[A-Z0-9]{6}")
 	private String ifscCode;
 	@NotEmpty
+	@Pattern(regexp="[A-Za-z]{3,}")
 	private String bankname;
 	@Min(value=0,message="Min balance is 0")
 	private double balance;

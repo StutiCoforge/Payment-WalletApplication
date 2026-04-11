@@ -22,4 +22,7 @@ public interface CustomerServiceInterface
 	public List<Customer> findByMobileNumber(String mobileNumber);
 	public List<Customer> findByEmailOrMobileNumber(String email,String mobileNumber);
 	public List<CustomerDto> findCustomerByQuery(String query);
+	Customer findSingleCustomerByEmail(String email);
+	Customer updateCustomerPassword(String pwd, String newpwd);
+	Customer updateCustomerPasswordByEmail(String email, String newPwd);
 }

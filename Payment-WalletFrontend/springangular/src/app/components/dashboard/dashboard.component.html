@@ -1,137 +1,188 @@
 <div>
   @if (loading) {
-    <div class="flex items-center justify-center h-64">
-      <div class="w-10 h-10 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
+  <div class="flex items-center justify-center h-64">
+    <div class="w-10 h-10 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
   } @else if (error) {
-    <div class="alert-error">{{ error }}</div>
+  <div class="alert-error">{{ error }}</div>
   } @else if (customer) {
 
-    <!-- Header -->
-    <div class="mb-8">
-      <p class="text-slate-400 text-sm">Good day,</p>
-      <h1 class="text-3xl font-bold text-white">{{ customer.custName }} 👋</h1>
+  <!-- Header -->
+  <div class="mb-8">
+    <p class="text-slate-400 text-sm">Good day,</p>
+    <h1 class="text-3xl font-bold text-white">{{ customer.custName }} 👋</h1>
+  </div>
+
+  <!-- Top stat cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+
+    <!-- Wallet Balance -->
+    <div class="col-span-1 sm:col-span-2 relative overflow-hidden rounded-2xl p-6
+                  bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 shadow-xl shadow-indigo-900/40">
+      <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+      <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+      <p class="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-2">Wallet Balance</p>
+      <p class="text-4xl font-bold text-white mb-1">₹{{ customer.wallet.balance | number:'1.2-2' }}</p>
+      <p class="text-indigo-300 text-xs">Wallet ID: #{{ customer.wallet.walletId }}</p>
+      <a routerLink="/wallet"
+        class="inline-flex items-center gap-1.5 mt-4 bg-white/15 hover:bg-white/25 text-white text-xs font-semibold px-4 py-2 rounded-full transition">
+        View Wallet
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
     </div>
 
-    <!-- Top stat cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
+    <!-- Customer ID -->
+    <div class="glass-card rounded-2xl p-5">
+      <div class="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      </div>
+      <p class="text-slate-400 text-xs mb-1">Customer ID</p>
+      <p class="text-2xl font-bold text-white">#{{ customer.custId }}</p>
+    </div>
 
-      <!-- Wallet Balance -->
-      <div class="col-span-1 sm:col-span-2 relative overflow-hidden rounded-2xl p-6
-                  bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 shadow-xl shadow-indigo-900/40">
-        <div class="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
-        <p class="text-indigo-200 text-xs font-semibold uppercase tracking-widest mb-2">Wallet Balance</p>
-        <p class="text-4xl font-bold text-white mb-1">₹{{ customer.wallet.balance | number:'1.2-2' }}</p>
-        <p class="text-indigo-300 text-xs">Wallet ID: #{{ customer.wallet.walletId }}</p>
-        <a routerLink="/wallet"
-          class="inline-flex items-center gap-1.5 mt-4 bg-white/15 hover:bg-white/25 text-white text-xs font-semibold px-4 py-2 rounded-full transition">
-          View Wallet
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
+    <!-- Beneficiaries count -->
+    <div class="glass-card rounded-2xl p-5">
+      <div class="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center mb-3">
+        <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </div>
+      <p class="text-slate-400 text-xs mb-1">Beneficiaries</p>
+      <p class="text-2xl font-bold text-white">{{ customer.wallet.beneficiary.length }}</p>
+    </div>
+  </div>
+
+  <!-- Customer Info + Quick Actions -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Profile card -->
+    <div class="glass-card rounded-2xl p-6">
+      <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Profile</h3>
+      <div class="flex items-center gap-4 mb-5">
+        <div
+          class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
+          {{ customer.custName.charAt(0) }}
+        </div>
+        <div>
+          <p class="font-semibold text-white">{{ customer.custName }}</p>
+          <p class="text-xs text-slate-400">{{ customer.email }}</p>
+        </div>
+      </div>
+      <div class="space-y-3 text-sm">
+        <div class="flex justify-between items-center py-2 border-b border-slate-800">
+          <span class="text-slate-400">Mobile</span>
+          <span class="text-slate-200 font-medium">{{ customer.mobileNumber }}</span>
+        </div>
+        <div class="flex justify-between items-center py-2">
+          <span class="text-slate-400">Email</span>
+          <span class="text-slate-200 font-medium text-xs">{{ customer.email }}</span>
+        </div>
+
+        <div>
+          <button (click)="showResetPasswordForm()" class="bg-red-800 text-white rounded px-3 py-2" >Change Password</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick actions -->
+    <div class="lg:col-span-2 glass-card rounded-2xl p-6">
+      <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Quick Actions</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <a routerLink="/bank-account"
+          class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-indigo-500/40 transition-all group">
+          <div
+            class="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center group-hover:bg-blue-500/25 transition">
+            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-slate-300">Bank</span>
+        </a>
+        <a routerLink="/beneficiary"
+          class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-violet-500/40 transition-all group">
+          <div
+            class="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center group-hover:bg-violet-500/25 transition">
+            <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-slate-300">Beneficiary</span>
+        </a>
+        <a routerLink="/bill-payment"
+          class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-amber-500/40 transition-all group">
+          <div
+            class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center group-hover:bg-amber-500/25 transition">
+            <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-slate-300">Bills</span>
+        </a>
+        <a routerLink="/transactions"
+          class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-emerald-500/40 transition-all group">
+          <div
+            class="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center group-hover:bg-emerald-500/25 transition">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <span class="text-xs font-medium text-slate-300">Transactions</span>
         </a>
       </div>
-
-      <!-- Customer ID -->
-      <div class="glass-card rounded-2xl p-5">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center mb-3">
-          <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-          </svg>
-        </div>
-        <p class="text-slate-400 text-xs mb-1">Customer ID</p>
-        <p class="text-2xl font-bold text-white">#{{ customer.custId }}</p>
-      </div>
-
-      <!-- Beneficiaries count -->
-      <div class="glass-card rounded-2xl p-5">
-        <div class="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center mb-3">
-          <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-        </div>
-        <p class="text-slate-400 text-xs mb-1">Beneficiaries</p>
-        <p class="text-2xl font-bold text-white">{{ customer.wallet.beneficiary.length }}</p>
-      </div>
     </div>
+  </div>
 
-    <!-- Customer Info + Quick Actions -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  }
 
-      <!-- Profile card -->
-      <div class="glass-card rounded-2xl p-6">
-        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Profile</h3>
-        <div class="flex items-center gap-4 mb-5">
-          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-lg font-bold text-white flex-shrink-0">
-            {{ customer.custName.charAt(0) }}
-          </div>
-          <div>
-            <p class="font-semibold text-white">{{ customer.custName }}</p>
-            <p class="text-xs text-slate-400">{{ customer.email }}</p>
+  @if (resetPwdForm) {
+  <div class="w-full flex items-center justify-center h-screen absolute z-[100] bg-black/60 top-0 left-0">
+    <div class="relative w-1/2 min-w-[300px] bg-black border border-indigo-800 rounded-xl p-5">
+      <button type="button" class="bg-red-800 aspect-square rounded-full text-white absolute right-2 top-2 w-6" (click)="showResetPasswordForm()">X</button>
+
+      <form #resetForm=ngForm (ngSubmit)="resetPassword()" class="space-y-5">
+        <div>
+          <label class="label">Current Password</label>
+          <input type="password" required id="pwd" #pwdCtrl="ngModel" [(ngModel)]="pwd" name="pwd" placeholder="•••••••••••••"
+            class="input-dark" />
+          <div *ngIf="pwdCtrl.invalid && pwdCtrl.touched">
+            <small class="text-danger border border-danger px-3 rounded mt-1"
+              *ngIf="pwdCtrl.errors?.['required']">Password is required</small>
           </div>
         </div>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between items-center py-2 border-b border-slate-800">
-            <span class="text-slate-400">Mobile</span>
-            <span class="text-slate-200 font-medium">{{ customer.mobileNumber }}</span>
-          </div>
-          <div class="flex justify-between items-center py-2">
-            <span class="text-slate-400">Email</span>
-            <span class="text-slate-200 font-medium text-xs">{{ customer.email }}</span>
+        
+        <div>
+          <label class="label">New Password</label>
+          <input type="password" required id="newPwd" #newPwdCtrl="ngModel" [(ngModel)]="newPwd" name="newPwd" placeholder="•••••••••••••"
+            class="input-dark" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}" />
+          <div *ngIf="newPwdCtrl.invalid && newPwdCtrl.touched">
+            <small class="text-danger border border-danger px-3 rounded mt-1"
+              *ngIf="newPwdCtrl.errors?.['required']">New Password is required</small>
+            <small class="text-danger border border-danger px-3 rounded mt-1"
+              *ngIf="newPwdCtrl.errors?.['pattern']">New Password should have atleast 1 uppercase, 1 lowercase, 1 digit and 1 special character</small>
           </div>
         </div>
-      </div>
+        
 
-      <!-- Quick actions -->
-      <div class="lg:col-span-2 glass-card rounded-2xl p-6">
-        <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-5">Quick Actions</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <a routerLink="/bank-account"
-            class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-indigo-500/40 transition-all group">
-            <div class="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center group-hover:bg-blue-500/25 transition">
-              <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
-              </svg>
-            </div>
-            <span class="text-xs font-medium text-slate-300">Bank</span>
-          </a>
-          <a routerLink="/beneficiary"
-            class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-violet-500/40 transition-all group">
-            <div class="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center group-hover:bg-violet-500/25 transition">
-              <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-            </div>
-            <span class="text-xs font-medium text-slate-300">Beneficiary</span>
-          </a>
-          <a routerLink="/bill-payment"
-            class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-amber-500/40 transition-all group">
-            <div class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center group-hover:bg-amber-500/25 transition">
-              <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-              </svg>
-            </div>
-            <span class="text-xs font-medium text-slate-300">Bills</span>
-          </a>
-          <a routerLink="/transactions"
-            class="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 hover:border-emerald-500/40 transition-all group">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/15 flex items-center justify-center group-hover:bg-emerald-500/25 transition">
-              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-              </svg>
-            </div>
-            <span class="text-xs font-medium text-slate-300">Transactions</span>
-          </a>
-        </div>
-      </div>
+
+        @if (resetPwdError) {
+        <div class="alert-error">{{ resetPwdError }}</div>
+        }
+
+        <button type="submit" [disabled]="resetForm.invalid || resetPwdLoading" class="btn-primary w-full text-center">
+         Change Password
+        </button>
+      </form>
     </div>
-
+  </div>
   }
 </div>

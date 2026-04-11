@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthResponse, LoginRequest, OtpRequest, OtpResponse, SignupRequest } from '../models/customer.model';
+import { AuthResponse, EmailOtpRequest, ForgetPasswordRequest, LoginRequest, OtpRequest, OtpResponse, SignupRequest } from '../models/customer.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -11,6 +11,14 @@ export class AuthService {
 
   sendotp(data: OtpRequest): Observable<OtpResponse> {
     return this.http.post<OtpResponse>(`${this.base}/customers/send-otp`, data);
+  }
+  
+  verifyotp(data: EmailOtpRequest): Observable<any> {
+    return this.http.post<OtpResponse>(`${this.base}/customers/verify-otp`, data);
+  }
+  
+  forgetPassword(data: ForgetPasswordRequest): Observable<any> {
+    return this.http.post<OtpResponse>(`${this.base}/customers/forget-password`, data);
   }
 
   signup(data: SignupRequest): Observable<AuthResponse> {

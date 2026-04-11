@@ -6,7 +6,7 @@
     </div>
     <button (click)="showForm = !showForm" class="btn-primary flex items-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
       </svg>
       Add Beneficiary
     </button>
@@ -16,92 +16,102 @@
   @if (error) { <div class="alert-error">{{ error }}</div> }
 
   @if (showForm) {
-    <div class="glass-card rounded-2xl p-6 mb-6">
-      <h3 class="text-sm font-semibold text-white mb-5">New Beneficiary</h3>
-      <form #beneficiaryForm=ngForm (ngSubmit)="addBeneficiary()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="label">Full Name</label>
-          <input type="text" #beneficiaryName="ngModel" [(ngModel)]="form.beneficiaryName" name="beneficiaryName" required placeholder="Siva" class="input-dark" />
-          <div *ngIf="beneficiaryName.invalid && beneficiaryName.touched">
-          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="beneficiaryName.errors?.['required']">Beneficiary Name is required</small>
+  <div class="glass-card rounded-2xl p-6 mb-6">
+    <h3 class="text-sm font-semibold text-white mb-5">New Beneficiary</h3>
+    <form #beneficiaryForm=ngForm (ngSubmit)="addBeneficiary()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="label">Full Name</label>
+        <input type="text" #beneficiaryName="ngModel" pattern="[a-zA-Z][a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]"
+          [(ngModel)]="form.beneficiaryName" name="beneficiaryName" required placeholder="Siva" class="input-dark" />
+        <div *ngIf="beneficiaryName.invalid && beneficiaryName.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="beneficiaryName.errors?.['required']">Beneficiary Name is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="beneficiaryName.errors?.['pattern']">Beneficiary Name should be valid</small>
         </div>
+      </div>
+      <div>
+        <label class="label">Mobile Number</label>
+        <input type="number" #mobileNumber="ngModel" pattern="[6-9][0-9]{9}" [(ngModel)]="form.mobileNumber"
+          name="mobileNumber" required placeholder="10-digit number" class="input-dark" />
+        <div *ngIf="mobileNumber.invalid && mobileNumber.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="mobileNumber.errors?.['required']">Mobile Number is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="mobileNumber.errors?.['pattern']">Mobile Number should be valid</small>
         </div>
-        <div>
-          <label class="label">Mobile Number</label>
-          <input type="number" #mobileNumber="ngModel" pattern="[6-9][0-9]{9}" [(ngModel)]="form.mobileNumber" name="mobileNumber" required placeholder="10-digit number" class="input-dark" />
-          <div *ngIf="mobileNumber.invalid && mobileNumber.touched">
-          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="mobileNumber.errors?.['required']">Mobile Number is required</small>
-          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="mobileNumber.errors?.['pattern']">Mobile Number should be valid</small>
-        </div>
-        </div>
-        <div class="md:col-span-2 flex gap-3 pt-2">
-          <button type="submit" class="btn-primary" [disabled]="beneficiaryForm.invalid">Save</button>
-          <button type="button" (click)="showForm = false" class="btn-ghost">Cancel</button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="md:col-span-2 flex gap-3 pt-2">
+        <button type="submit" class="btn-primary" [disabled]="beneficiaryForm.invalid">Save</button>
+        <button type="button" (click)="showForm = false" class="btn-ghost">Cancel</button>
+      </div>
+    </form>
+  </div>
   }
 
   @if (loading) {
-    <div class="flex items-center justify-center h-48">
-      <div class="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
+  <div class="flex items-center justify-center h-48">
+    <div class="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+  </div>
   } @else if (beneficiaries.length === 0) {
-    <div class="glass-card rounded-2xl p-12 text-center">
-      <div class="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto mb-4">
-        <svg class="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
-      </div>
-      <p class="text-slate-400">No beneficiaries added yet</p>
+  <div class="glass-card rounded-2xl p-12 text-center">
+    <div class="w-14 h-14 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto mb-4">
+      <svg class="w-7 h-7 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
     </div>
+    <p class="text-slate-400">No beneficiaries added yet</p>
+  </div>
   } @else {
-    <div class="glass-card rounded-2xl overflow-hidden">
-      <div class="px-6 py-4 border-b border-slate-800/60 flex items-center justify-between">
-        <p class="text-sm font-semibold text-white">{{ beneficiaries.length }} beneficiar{{ beneficiaries.length === 1 ? 'y' : 'ies' }}</p>
-      </div>
-      <ul class="divide-y divide-slate-800/60">
-        @for (b of beneficiaries; track b.beneficiaryId) {
-          <li class="flex items-center gap-4 px-6 py-4 hover:bg-slate-800/30 transition">
-            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
-              {{ b.beneficiaryName.charAt(0).toUpperCase() }}
-            </div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-white">{{ b.beneficiaryName }}</p>
-              <p class="text-xs text-slate-400">{{ b.mobileNumber }}</p>
-            </div>
-            <div class="flex gap-2 flex-shrink-0">
-              <button (click)="openSend(b)" class="btn-accent">Send Money</button>
-              <button (click)="delete(b.beneficiaryId)" class="btn-danger">Delete</button>
-            </div>
-          </li>
-        }
-      </ul>
+  <div class="glass-card rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-800/60 flex items-center justify-between">
+      <p class="text-sm font-semibold text-white">{{ beneficiaries.length }} beneficiar{{ beneficiaries.length === 1 ?
+        'y' : 'ies' }}</p>
     </div>
+    <ul class="divide-y divide-slate-800/60">
+      @for (b of beneficiaries; track b.beneficiaryId) {
+      <li class="flex items-center gap-4 px-6 py-4 hover:bg-slate-800/30 transition">
+        <div
+          class="w-10 h-10 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
+          {{ b.beneficiaryName.charAt(0).toUpperCase() }}
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-white">{{ b.beneficiaryName }}</p>
+          <p class="text-xs text-slate-400">{{ b.mobileNumber }}</p>
+        </div>
+        <div class="flex gap-2 flex-shrink-0">
+          <button (click)="openSend(b)" class="btn-accent">Send Money</button>
+          <button (click)="delete(b.beneficiaryId)" class="btn-danger">Delete</button>
+        </div>
+      </li>
+      }
+    </ul>
+  </div>
   }
 
   <!-- Send Money Modal -->
   @if (sendModal) {
-    <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div class="glass-card rounded-2xl p-6 w-full max-w-sm shadow-2xl">
-        <h3 class="text-lg font-semibold text-white mb-1">Send Money</h3>
-        <div class="flex items-center gap-3 my-4 p-3 bg-slate-800/60 rounded-xl">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-sm font-bold text-white">
-            {{ sendModal.beneficiaryName.charAt(0) }}
-          </div>
-          <div>
-            <p class="text-sm font-semibold text-white">{{ sendModal.beneficiaryName }}</p>
-            <p class="text-xs text-slate-400">{{ sendModal.mobileNumber }}</p>
-          </div>
+  <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="glass-card rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+      <h3 class="text-lg font-semibold text-white mb-1">Send Money</h3>
+      <div class="flex items-center gap-3 my-4 p-3 bg-slate-800/60 rounded-xl">
+        <div
+          class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-sm font-bold text-white">
+          {{ sendModal.beneficiaryName.charAt(0) }}
         </div>
-        <label class="label">Amount (₹)</label>
-        <input type="number" [(ngModel)]="sendAmount" min="1" placeholder="Enter amount" class="input-dark mb-5" />
-        <div class="flex gap-3">
-          <button (click)="doSend()" class="btn-primary flex-1 text-center">Send</button>
-          <button (click)="sendModal = null" class="btn-ghost flex-1 text-center">Cancel</button>
+        <div>
+          <p class="text-sm font-semibold text-white">{{ sendModal.beneficiaryName }}</p>
+          <p class="text-xs text-slate-400">{{ sendModal.mobileNumber }}</p>
         </div>
       </div>
+      <label class="label">Amount (₹)</label>
+      <input type="number" [(ngModel)]="sendAmount" min="1" placeholder="Enter amount" class="input-dark mb-5" />
+      <div class="flex gap-3">
+        <button (click)="doSend()" class="btn-primary flex-1 text-center">Send</button>
+        <button (click)="sendModal = null" class="btn-ghost flex-1 text-center">Cancel</button>
+      </div>
     </div>
+  </div>
   }
 </div>

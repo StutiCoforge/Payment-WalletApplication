@@ -56,7 +56,7 @@ public class BankAccountService implements BankAccountServiceInterface {
 		CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
 		Customer customer = customerService.getById(customerDto.getCustId());		
 
-		bankAccount.setBalance(10000);
+		bankAccount.setBalance(100000);
 		bankAccount.setIfscCode(bankAccount.getIfscCode().toUpperCase());
 		bankAccount.setCustomer(customer);
 //		customerService.addBankAccount(customer.getCustId(), bankAccount);
@@ -94,7 +94,7 @@ public class BankAccountService implements BankAccountServiceInterface {
 		
 		String description = "Topup of "+amount+" Rs. to wallet";
 		Transaction trans = new Transaction(
-			    "DEBIT",
+			    "CREDIT",
 			    "PENDING",
 			    amount,
 			    customer,

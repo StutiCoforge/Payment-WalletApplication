@@ -101,7 +101,7 @@
             <td class="px-6 py-4 text-slate-400 text-xs">{{ tx.transactionDate | date:'mediumDate' }}</td>
             <td class="px-6 py-4 text-right flex gap-4">
               <button (click)="fetchSingleTransaction(tx)" class="btn-info">View</button>
-              <button (click)="deleteTransaction(tx.transactionId)" class="btn-danger">Delete</button>
+              <!-- <button (click)="deleteTransaction(tx.transactionId)" class="btn-danger">Delete</button> -->
             </td>
           </tr>
           }

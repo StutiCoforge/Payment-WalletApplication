@@ -6,7 +6,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
- 
+
+import com.coforge.entities.BillPayment;
 import com.coforge.entities.Customer;
 //import com.coforge.entities.Beneficiary;
 import com.coforge.entities.Transaction;
@@ -40,8 +41,10 @@ List<Transaction> findAllByCustomerCustId(long customer);
 		
 		
 		void deleteByCustomerCustId(long custId);
- 
 //		@Query("SELECT t FROM Trasnaction t JOIN t.customer c WHERE c.custName LIKE %:query% OR c.mobileNumber LIKE %:query% OR c.email LIKE %:query%")
 //		List<Transaction> searchTransactions(@Param("query") String query);
  
+		@Query("SELECT t FROM Transaction t JOIN t.customer c WHERE c.custName LIKE %:query% OR c.mobileNumber LIKE %:query% OR c.email LIKE %:query%")
+		public List<Transaction> searchTransactions(@Param("query") String  query);
+
 }

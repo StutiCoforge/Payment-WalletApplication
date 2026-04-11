@@ -16,6 +16,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +40,7 @@ public class Customer{
 	@Builder.Default
 	private String role="USER";
 	@NotEmpty
+	@Size(min = 2, message = "Name must be at least 2 characters")
 	private String custName;
 	@NotEmpty
 	@Column(unique=true)
@@ -46,10 +48,11 @@ public class Customer{
 	private String mobileNumber;
 	@NotEmpty
 	@Column(unique=true)
-	@Pattern(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "Email should be of valid format")
+	@Pattern(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", message = "Email should be of valid format")
 	private String email;
 	
 	@NotEmpty
+	@Pattern(regexp="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@.#$!%*?&])[A-Za-z\\d@.#$!%*?&]{8,15}",message="Password shuld have atleast 1 uppercase , 1 lowercase, 1 digit and 1 special character")
 	private String pwd;
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "wallet_id", referencedColumnName = "walletId")

@@ -29,8 +29,16 @@
       </div>
       <div>
         <label class="label">Amount (₹)</label>
-        <input type="number" [(ngModel)]="form.amount" name="amount" min="1" required placeholder="350"
-          class="input-dark" />
+        <input type="number" #amount="ngModel" [(ngModel)]="form.amount" name="amount" min="1" required
+          placeholder="350" class="input-dark" />
+        <div *ngIf="amount.invalid && amount.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="amount.errors?.['required']">Amount
+            is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="amount.errors?.['min']">Amount should
+            be greater than 0</small>
+          <!-- <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="">Bank Name should be valid</small> -->
+        </div>
       </div>
       <!-- <div>
           <label class="label">Bill Data Key</label>
@@ -43,30 +51,59 @@
       @if(form.billType=="ELECTRICITY"){
       <div>
         <label class="label">State</label>
-        <input type="text" [(ngModel)]="electricityBookingBillData.state" name="electricityBookingBillData.state" placeholder="e.g. Uttar Pradesh"
-          class="input-dark" />
+        <input type="text" #state="ngModel" [(ngModel)]="electricityBookingBillData.state"
+          name="electricityBookingBillData.state" placeholder="e.g. Uttar Pradesh" class="input-dark" required
+          pattern="[A-Za-z]{3,}[A-Za-z\s]*" />
+        <div *ngIf="state.invalid && state.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="state.errors?.['required']">State is
+            required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="state.errors?.['pattern']">State
+            should be valid</small>
+        </div>
       </div>
       <div>
         <label class="label">Biller Name</label>
-        <input type="text" [(ngModel)]="electricityBookingBillData.billerName" name="electricityBookingBillData.billerName" placeholder="e.g UPPCCL"
-          class="input-dark" />
+        <input type="text" required pattern="[a-zA-Z]{2}[a-zA-Z\s]{0,20}[a-zA-Z]" #billerName="ngModel"
+          [(ngModel)]="electricityBookingBillData.billerName" name="electricityBookingBillData.billerName"
+          placeholder="e.g UPPCCL" class="input-dark" />
+        <div *ngIf="billerName.invalid && billerName.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="billerName.errors?.['required']">Biller Name is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="billerName.errors?.['pattern']">Biller Name should be valid</small>
+        </div>
       </div>
       <div>
         <label class="label">Account Number</label>
-        <input type="number" [(ngModel)]="electricityBookingBillData.accountNumber" name="electricityBookingBillData.accountNumber" placeholder="e.g. 678878"
-          class="input-dark" />
+        <input type="number" required pattern="[1-9][0-9]{8,}" #accountNumber="ngModel" min="99999999"
+          [(ngModel)]="electricityBookingBillData.accountNumber" name="electricityBookingBillData.accountNumber"
+          placeholder="e.g. 678878" class="input-dark" />
+        <div *ngIf="accountNumber.invalid && accountNumber.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="accountNumber.errors?.['required']">Account Number is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="accountNumber.errors?.['pattern']">Account Number should be valid</small>
+        </div>
       </div>
       }
       @if(form.billType=="MOBILE_RECHARGE"){
       <div>
         <label class="label">Mobile Number</label>
-        <input type="text" [(ngModel)]="mobileRechargeBillData.mobileNumber" name="mobileRechargeBillData.mobileNumber" placeholder="e.g. 8899889988"
+        <input type="text" [(ngModel)]="mobileRechargeBillData.mobileNumber" #mobileNumber="ngModel"
+          pattern="[6-9][0-9]{9}" required name="mobileRechargeBillData.mobileNumber" placeholder="e.g. 8899889988"
           class="input-dark" />
+        <div *ngIf="mobileNumber.invalid && mobileNumber.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="mobileNumber.errors?.['required']">Mobile Number is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="mobileNumber.errors?.['pattern']">Mobile Number should be valid</small>
+        </div>
       </div>
       <div>
         <label class="label">Operator</label>
         <select [(ngModel)]="mobileRechargeBillData.operator" name="mobileRechargeBillData.operator" class="input-dark">
-          <option *ngFor="let operator of mobileRechargeOperators" [value]="operator" class="bg-slate-800">{{ operator }}</option>
+          <option *ngFor="let operator of mobileRechargeOperators" [value]="operator" class="bg-slate-800">{{ operator
+            }}</option>
           <!-- @for (type of mobileRechargeOperators; track operator) {
           <option [value]="operator" class="bg-slate-800">{{ operator }}</option>
           } -->
@@ -77,17 +114,28 @@
       @if(form.billType=="GAS_BOOKING"){
       <div>
         <label class="label">Gas Provider</label>
-        <input type="text" [(ngModel)]="gasCylinderBookingBillData.gasProvider" name="gasCylinderBookingBillData.gasProvider" placeholder="e.g. Indane"
-          class="input-dark" />
+        <input type="text" #gasProvider="ngModel" required pattern="[a-zA-Z][a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]"
+          [(ngModel)]="gasCylinderBookingBillData.gasProvider" name="gasCylinderBookingBillData.gasProvider"
+          placeholder="e.g. Indane" class="input-dark" />
+        <div *ngIf="gasProvider.invalid && gasProvider.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="gasProvider.errors?.['required']">Gas
+            Provider is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="gasProvider.errors?.['pattern']">Gas
+            Provider should be valid</small>
+        </div>
       </div>
       <div>
         <label class="label">Customer Number</label>
-        <input type="text" [(ngModel)]="gasCylinderBookingBillData.customerNumber" name="gasCylinderBookingBillData.customerNumber" placeholder="e.g 788667868"
-          class="input-dark" />
+        <input type="text" pattern="[1-9][0-9]{9,}" [(ngModel)]="gasCylinderBookingBillData.customerNumber" #customerNumber="ngModel" required
+          name="gasCylinderBookingBillData.customerNumber" placeholder="e.g 788667868" class="input-dark" />
+        <div *ngIf="customerNumber.invalid && customerNumber.touched">
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="customerNumber.errors?.['required']">Customer Number is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1" *ngIf="customerNumber.errors?.['pattern']">Customer Number should be valid</small>
+        </div>
       </div>
       }
       <div class="md:col-span-2 flex gap-3 pt-2">
-        <button type="submit" class="btn-primary">Pay Now</button>
+        <button type="submit" class="btn-primary" [disabled]="billForm.invalid">Pay Now</button>
         <button type="button" (click)="showForm = false" class="btn-ghost" [disabled]="billForm.invalid">Cancel</button>
       </div>
     </form>
@@ -154,7 +202,7 @@
           <td class="px-6 py-4 text-slate-400 text-xs">{{ bill.paymentDate | date:'mediumDate' }}</td>
           <td class="px-6 py-4 text-right flex gap-4">
             <button (click)="fetchSingleBillPayment(bill)" class="btn-info">View</button>
-            <button (click)="deleteBill(bill.billId)" class="btn-danger">Delete</button>
+            <!-- <button (click)="deleteBill(bill.billId)" class="btn-danger">Delete</button> -->
           </td>
         </tr>
         }
@@ -170,10 +218,12 @@
       <table>
         <tbody>
           <tr>
-            <td class="px-6 text-slate-100">Type</td> <td class="px-6 py-2 text-slate-400 text-sm">{{singleBillPayment.billType}}</td>
+            <td class="px-6 text-slate-100">Type</td>
+            <td class="px-6 py-2 text-slate-400 text-sm">{{singleBillPayment.billType}}</td>
           </tr>
           <tr>
-            <td class="px-6 text-slate-100">Amount</td> <td class="px-6 py-2 text-slate-400 text-sm">{{singleBillPayment.amount}}</td>
+            <td class="px-6 text-slate-100">Amount</td>
+            <td class="px-6 py-2 text-slate-400 text-sm">{{singleBillPayment.amount}}</td>
           </tr>
 
           <tr *ngFor="let col of getColumns(singleBillPayment.billData)">
@@ -181,7 +231,8 @@
             <td class="px-6 py-2 text-slate-400 text-sm">{{singleBillPaymentBillData[col]}}</td>
           </tr>
           <tr>
-            <td class="px-6 text-slate-100">Date</td> <td class="px-6 py-2 text-slate-400 text-sm">{{singleBillPayment.paymentDate | date:'mediumDate'}}</td>
+            <td class="px-6 text-slate-100">Date</td>
+            <td class="px-6 py-2 text-slate-400 text-sm">{{singleBillPayment.paymentDate | date:'mediumDate'}}</td>
           </tr>
         </tbody>
       </table>

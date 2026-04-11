@@ -18,10 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coforge.dtos.CustomerDto;
 import com.coforge.dtos.CustomerJWTTokenDto;
 import com.coforge.dtos.CustomerResponseDto;
+import com.coforge.dtos.EmailOtpDto;
+import com.coforge.dtos.EmailOtpRequestDto;
+import com.coforge.dtos.ForgetPasswordRequestDto;
 import com.coforge.dtos.LoginRequestDto;
 import com.coforge.dtos.LoginResponseDto;
+import com.coforge.dtos.PasswordResetRequestDto;
 import com.coforge.dtos.SendOtpRequestDto;
 import com.coforge.entities.Customer;
+import com.coforge.exception.InvalidOtpException;
 import com.coforge.security.JwtUtil;
 import com.coforge.services.CustomerService;
 import com.coforge.services.EmailService;
@@ -71,10 +76,45 @@ public class CustomerController
 	}
 
 	@PostMapping("/customers/send-otp")
-	public ResponseEntity<Map<String,String>> login(@RequestBody SendOtpRequestDto otpRequestDto)
+	public ResponseEntity<Map<String,String>> sendOtp(@RequestBody SendOtpRequestDto otpRequestDto)
 	{
 		String otp = emailService.sendOtp(otpRequestDto.getEmail());
-		return new ResponseEntity<> (Map.of("message","Otp Sent","otp",otp), HttpStatus.OK);
+		String otpToken = jwtUtil.generateOtpToken(otpRequestDto.getEmail(), otp);
+		return new ResponseEntity<> (Map.of("message","Otp Sent","otp",otpToken), HttpStatus.OK);
+	}
+
+	@PostMapping("/customers/verify-otp")
+	public ResponseEntity<Map<String,String>> verifyOtp(@RequestBody EmailOtpRequestDto emailOtpRequestDto)
+	{	
+		EmailOtpDto emailOtpDto = jwtUtil.verifyOtpToken(emailOtpRequestDto.getOtpToken());
+		if(emailOtpDto.getEmail().equals(emailOtpRequestDto.getEmail())&&emailOtpDto.getOtp().equals(emailOtpRequestDto.getOtp())) {
+			return new ResponseEntity<> (Map.of("message","Verified"), HttpStatus.OK);
+		}
+		else {
+			throw new InvalidOtpException("Invalid Otp");
+		}
+	}
+
+	
+	@PostMapping("/customers/forget-password")
+	public ResponseEntity<LoginResponseDto> forgetPassword(@RequestBody ForgetPasswordRequestDto forgetPasswordResetrequest)
+	{	
+		EmailOtpDto emailOtpDto = jwtUtil.verifyOtpToken(forgetPasswordResetrequest.getOtpToken());
+		if(emailOtpDto.getEmail().equals(forgetPasswordResetrequest.getEmail())&&emailOtpDto.getOtp().equals(forgetPasswordResetrequest.getOtp())) {
+			Customer customer = customerService.updateCustomerPasswordByEmail(forgetPasswordResetrequest.getEmail(),forgetPasswordResetrequest.getNewPwd());
+			String token = jwtUtil.generateToken(new CustomerJWTTokenDto(customer.getCustId(),customer.getCustName(),customer.getMobileNumber(),customer.getEmail(),customer.getRole()));
+			return new ResponseEntity<> (new LoginResponseDto(token, customer.getEmail()), HttpStatus.OK);
+		}
+		else {
+			throw new InvalidOtpException("Invalid Otp");
+		}
+	}
+	
+	@PostMapping("auth/customers/reset-password")
+	public ResponseEntity<Map<String,String>> resetPassword(@RequestBody PasswordResetRequestDto passwordResetRequestDto)
+	{	System.out.println(passwordResetRequestDto);
+		customerService.updateCustomerPassword(passwordResetRequestDto.getPwd(), passwordResetRequestDto.getNewPwd());
+		return new ResponseEntity<>(Map.of("message","Password Changed Successfully"),HttpStatus.OK);
 	}
 
 	@GetMapping("/auth/customers/getDetails")

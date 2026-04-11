@@ -26,7 +26,7 @@ public class CustomerDao implements CustomerDaoInterface
 		return customerRepository.findById(customerId);
 	}
 	@Override
-	public Customer updateCustomer(Customer customer, long id)
+	public Customer updateCustomer(Customer customer)
 	{
 		return customerRepository.save(customer);
 	}

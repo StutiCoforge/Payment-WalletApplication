@@ -22,13 +22,15 @@
     <form #bankAccountForm=ngForm (ngSubmit)="addAccount()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label class="label">Account Number</label>
-        <input type="number" pattern="[0-9]+" id="accountNo" #accountNo="ngModel" [(ngModel)]="form.accountNo"
+        <input type="number" pattern="[1-9][0-9]+" min="999999999" id="accountNo" #accountNo="ngModel" [(ngModel)]="form.accountNo"
           name="accountNo" required placeholder="123456789012" class="input-dark" />
         <div *ngIf="accountNo.invalid && accountNo.touched">
           <small class="text-danger border border-danger px-3 rounded mt-1"
             *ngIf="accountNo.errors?.['required']">Account Number is required</small>
           <small class="text-danger border border-danger px-3 rounded mt-1"
             *ngIf="accountNo.errors?.['pattern']">Account Number should be in numbers</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="accountNo.errors?.['min']">Account Number should be valid</small>
         </div>
       </div>
       <div>
@@ -45,10 +47,14 @@
       <div>
         <label class="label">Bank Name</label>
         <input type="text" [(ngModel)]="form.bankname" id="bankname" #bankname="ngModel" name="bankname" required
-          placeholder="State Bank of India" class="input-dark" />
+          placeholder="State Bank of India" class="input-dark" pattern="[A-Za-z]{3,}[A-Za-z\s]*" minlength="3" />
         <div *ngIf="bankname.invalid && bankname.touched">
           <small class="text-danger border border-danger px-3 rounded mt-1"
             *ngIf="bankname.errors?.['required']">Bank Name is required</small>
+          <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="bankname.errors?.['minlength'] || bankname.errors?.['pattern']">Bank Name should be valid</small>
+          <!-- <small class="text-danger border border-danger px-3 rounded mt-1"
+            *ngIf="">Bank Name should be valid</small> -->
         </div>
       </div>
       <!-- <div>
