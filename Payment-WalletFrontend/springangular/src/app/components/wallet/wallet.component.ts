@@ -33,6 +33,7 @@ export class WalletComponent implements OnInit {
 
   load(){
     this.loading=true;
+    this.error = '';
     this.walletService.getWallet().subscribe({
       next: (data) => { this.wallet = data; this.loading = false; },
       error: () => { this.error = 'Failed to load wallet.'; this.loading = false; }
@@ -46,6 +47,7 @@ export class WalletComponent implements OnInit {
 
   showBankAccounts(){
     this.showTopUpAccount = true;
+    this.bankError="";
     this.loadBanks();
   }
 
@@ -65,6 +67,7 @@ export class WalletComponent implements OnInit {
         this.transferModal = null;
         this.load();
         this.loadBanks();
+        this.bankError="";
       },
       error: () => { this.bankError = 'Transfer failed. Insufficent Balance';this.transferModal = null;this.loadBanks();this.load(); }
     });

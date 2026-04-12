@@ -51,6 +51,8 @@ public class Customer{
 	@Pattern(regexp = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}", message = "Email should be of valid format")
 	private String email;
 	
+	private Boolean active;
+	
 	@NotEmpty
 	@Pattern(regexp="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@.#$!%*?&])[A-Za-z\\d@.#$!%*?&]{8,15}",message="Password shuld have atleast 1 uppercase , 1 lowercase, 1 digit and 1 special character")
 	private String pwd;

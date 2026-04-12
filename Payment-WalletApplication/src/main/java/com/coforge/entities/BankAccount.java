@@ -28,7 +28,7 @@ public class BankAccount {
 	@Pattern(regexp="[A-Z]{4}0[A-Z0-9]{6}")
 	private String ifscCode;
 	@NotEmpty
-	@Pattern(regexp="[A-Za-z]{3,}")
+	@Pattern(regexp="[A-Za-z]{3,}[A-Za-z\s]*")
 	private String bankname;
 	@Min(value=0,message="Min balance is 0")
 	private double balance;

@@ -22,7 +22,7 @@
     <form #bankAccountForm=ngForm (ngSubmit)="addAccount()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label class="label">Account Number</label>
-        <input type="number" pattern="[1-9][0-9]+" min="999999999" id="accountNo" #accountNo="ngModel" [(ngModel)]="form.accountNo"
+        <input type="number" pattern="[1-9][0-9]{9,}" min="999999999" id="accountNo" #accountNo="ngModel" [(ngModel)]="form.accountNo"
           name="accountNo" required placeholder="123456789012" class="input-dark" />
         <div *ngIf="accountNo.invalid && accountNo.touched">
           <small class="text-danger border border-danger px-3 rounded mt-1"

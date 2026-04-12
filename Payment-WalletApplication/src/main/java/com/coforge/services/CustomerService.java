@@ -18,7 +18,9 @@ import com.coforge.entities.Wallet;
 import com.coforge.exception.CustomerAlreadyExistsException;
 import com.coforge.exception.CustomerNotFoundException;
 import com.coforge.exception.InvalidPasswordException;
+import com.coforge.repositories.BillPaymentRepository;
 import com.coforge.repositories.TransactionRepository;
+import com.coforge.repositories.WalletRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -34,13 +36,19 @@ public class CustomerService implements CustomerServiceInterface
 	@Autowired
 	private WalletServiceImpl walletService;
 	
+	@Autowired
+	private BillPaymentRepository billPaymentRepository;
+	
+	@Autowired
+	private WalletRepository walletRepository;
+	
 	@Override
 	public List<CustomerResponseDto> getAllCustomer(){
 		List<CustomerResponseDto> customers =  customerDao.getAllCustomer().stream().map(
 				(c)->{
 //					Wallet wallet = walletService.getWalletByCustomerId(c.getCustId());
 //					WalletDto w = new WalletDto(wallet.getWalletId(),wallet.getBalance(),wallet.getBeneficiary());
-					return new CustomerResponseDto(c.getCustId(),c.getCustName(),c.getMobileNumber(),c.getEmail());	
+					return new CustomerResponseDto(c.getCustId(),c.getCustName(),c.getMobileNumber(),c.getEmail(),c.getActive());	
 				}).collect(Collectors.toList());
 		
 		return customers;
@@ -65,6 +73,7 @@ public class CustomerService implements CustomerServiceInterface
 		}
 		Wallet wallet = walletService.createWallet(BigDecimal.ZERO);
 		customer.setWallet(wallet);
+		customer.setActive(true);
 		return customerDao.saveCustomer(customer);
 	}
 
@@ -112,17 +121,25 @@ public class CustomerService implements CustomerServiceInterface
 	@Override
 	@Transactional
 	public void deleteCustomer(long customerId)
-	{
-		transactionRepository.deleteByCustomerCustId(customerId);
-		System.out.println("Transactions deleted");
-		customerDao.deleteCustomer(customerId);
-		System.out.println("Customer deleted");
+	{	
+		Customer customer = customerDao.getById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer Not Found" + customerId));
+		customer.setActive(!customer.getActive());
+		customerDao.updateCustomer(customer);
 	}
+
+//	public void activateCustomer(long customerId)
+//	{	
+//		Customer customer = customerDao.getById(customerId).orElseThrow(() -> new CustomerNotFoundException("Customer Not Found" + customerId));
+//		customer.setActive(true);
+//		customerDao.updateCustomer(customer);
+//	}
 
 	@Override
 	public Customer login(String email, String pwd)
 	{	
-		return customerDao.findByEmailAndPwd(email, pwd).orElseThrow(() -> new CustomerNotFoundException("Invalid Email or Password"));
+		Customer customer = customerDao.findByEmailAndPwd(email, pwd).orElseThrow(() -> new CustomerNotFoundException("Invalid Email or Password"));
+		if(customer.getActive().equals(false)) throw new CustomerNotFoundException("Customer Not found");
+		return customer;
 	}
 	
 //	@Override
@@ -190,7 +207,7 @@ public class CustomerService implements CustomerServiceInterface
 	@Override
 	public CustomerResponseDto loginAdmin(String email, String pwd) {
 		if(email.equals("admin@mail.com")&&pwd.equals("admin@123")){
-			return new CustomerResponseDto(0,"ADMIN","8888888888","admin@mail.com");
+			return new CustomerResponseDto(0,"ADMIN","8888888888","admin@mail.com",true);
 		}
 		else {
 			throw new CustomerNotFoundException("Invalid Email or password");
