@@ -62,7 +62,9 @@ export class TransactionComponent implements OnInit {
     } else if (this.filterSubCategory as TransactionSubCategory) {
       this.txService.getBySubCategory(this.filterSubCategory as TransactionSubCategory).subscribe({
         next: (data) => { this.filtered = data; },
-        error: () => { this.error = 'Filter failed.'; }
+        error: () => { this.error = 'Filter failed.'; 
+
+        }
       });
     } else if (this.filterFrom && this.filterTo) {
       this.txService.getByDateRange(this.filterFrom, this.filterTo).subscribe({
