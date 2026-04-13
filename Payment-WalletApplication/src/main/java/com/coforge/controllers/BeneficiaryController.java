@@ -78,7 +78,7 @@ public class BeneficiaryController {
 
 		@PostMapping("/beneficiary/mobile/sendMoney/{mobileNumber}")
 		public ResponseEntity<Map<String,String>> transferMoneyToBeneficiaryByMobile(@Param("amount") String amount,@PathVariable("mobileNumber") String mobileNumber) {
-			
+//			System.out.println("request hit"+amount+mobileNumber);
 			String response = service.sendMoney(mobileNumber, Double.parseDouble(amount));
 			
 			return new ResponseEntity<>(Map.of("message",response),HttpStatus.OK);

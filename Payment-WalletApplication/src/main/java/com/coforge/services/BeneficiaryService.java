@@ -133,6 +133,7 @@ Beneficiary b = dao.saveBeneficiary(beneficiary);
 	    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			CustomerJWTTokenDto customerDto = (CustomerJWTTokenDto) auth.getPrincipal();
 			
+			
 			Customer customer = customerService.getById(customerDto.getCustId());
 			Wallet wallet = walletService.getWalletByCustomerId(customerDto.getCustId());
 	        // 1. Validate Beneficiary
@@ -160,7 +161,9 @@ Beneficiary b = dao.saveBeneficiary(beneficiary);
 
 	        
 	        try {
+	        	System.out.println("Wallet getting");
 	        	 walletService.debit(wallet.getWalletId(), BigDecimal.valueOf(amount));
+	        	 System.out.println("Wallet debit");
 	            	 
 	        	transaction.setTransactionStatus("SUCCESS");
 	            transactionService.updateTransaction(transaction);
